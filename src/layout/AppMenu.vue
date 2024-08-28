@@ -6,7 +6,7 @@ import AppMenuItem from './AppMenuItem.vue';
 const model = ref([
     {
         label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-th-large', to: '/' }]
     },
     {
       label: 'Pages',
@@ -15,66 +15,98 @@ const model = ref([
       items: [
 
       {
-          label: 'Company',
-          icon: 'pi pi-fw pi-user',
+          label: 'Home',
+          icon: 'pi pi-fw pi-home',
+      },
+
+      {
+          label: 'Payroll',
+          icon: 'pi pi-fw pi-money-bill',
           items: [
             {
+              label: 'Active',
+              icon: 'pi pi-fw pi-circle',
+              to: '/payroll-active'
+            },
+            {
+              label: 'History',
+              icon: 'pi pi-fw pi-circle',
+              to: '/payroll-history'
+            },
+            {
+              label: 'Archived',
+              icon: 'pi pi-fw pi-circle',
+              to: '/payroll-archived'
+            }
+          ]
+      },
+
+      {
+          label: 'Company',
+          icon: 'pi pi-fw pi-building',
+          items: [
+            {
+              label: 'Create',
+              icon: 'pi pi-fw pi-circle',
+              to: '/create-company'
+            },
+            {
               label: 'Details',
-              icon: 'pi pi-fw pi-sign-in',
-              to: '/create-company-details'
+              icon: 'pi pi-fw pi-circle',
+              to: '/company-details'
             },
             {
               label: 'Allowances',
-              icon: 'pi pi-fw pi-sign-in',
-              to: '/employees'
+              icon: 'pi pi-fw pi-circle',
+              to: '/company-allowance'
             },
             {
               label: 'Pay Items',
-              icon: 'pi pi-fw pi-sign-in',
-              to: '/employees'
+              icon: 'pi pi-fw pi-circle',
+              to: '/company-payitems'
             },
             
             {
               label: 'Pay Schedules',
-              icon: 'pi pi-fw pi-sign-in',
-              to: '/employees'
+              icon: 'pi pi-fw pi-circle',
+              to: '/company-pay-schedules'
             },
             
             {
               label: 'Statutory',
-              icon: 'pi pi-fw pi-sign-in',
-              to: '/employees'
+              icon: 'pi pi-fw pi-circle',
+              to: '/company-statutory'
             },
             
             {
               label: 'Salaries',
-              icon: 'pi pi-fw pi-sign-in',
-              to: '/employees'
+              icon: 'pi pi-fw pi-circle',
+              to: '/company-salaries'
             },
           ]
-        },
+      },
 
-        {
-          label: 'Manage Employee',
-          icon: 'pi pi-fw pi-user',
-          items: [
-            {
-              label: 'Employees',
-              icon: 'pi pi-fw pi-sign-in',
-              to: '/employees'
-            },
-            // {
-            //   label: 'Error',
-            //   icon: 'pi pi-fw pi-times-circle',
-            //   to: '/auth/error'
-            // },
-            // {
-            //   label: 'Access Denied',
-            //   icon: 'pi pi-fw pi-lock',
-            //   to: '/auth/access'
-            // }
-          ]
-        },
+      {
+          label: 'HMRC',
+          icon: 'pi pi-fw pi-briefcase',
+          to: '/company-hmrc'
+      },
+
+      {
+          label: 'Auto Enrollment',
+          icon: 'pi pi-fw pi-id-card',
+      },
+
+      {
+        label: 'People',
+        icon: 'pi pi-fw pi-users',
+        to: '/employees',
+      },
+      {
+        label: 'Reports',
+        icon: 'pi pi-fw pi-file',
+        to: '/company-reports',
+      },
         // {
         //   label: 'Crud',
         //   icon: 'pi pi-fw pi-pencil',
@@ -114,4 +146,8 @@ const model = ref([
     </ul>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep .pi-circle {
+    font-size: 7px !important; /* Adjust as needed */
+}
+</style>

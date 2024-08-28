@@ -14,9 +14,92 @@ const router = createRouter({
                     component: () => import('@/views/Dashboard.vue')
                 },
                 {
-                    path: '/create-company-details',
-                    name: 'create-company-details',
-                    component: () => import('@/views/company/CreateCompanyDetails.vue')
+                    path: '/create-company',
+                    name: 'create-company',
+                    component: () => import('@/views/company/CreateCompany/create.vue')
+                },
+                {
+                    path: '/company',
+                    name: 'company',
+                    children: [
+                        {
+                            path: '/company-details',
+                            name: 'company-details',
+                            component: () => import('@/views/company/details.vue')
+                        },
+                        {
+                            path: '/company-allowance',
+                            name: 'company-allowance',
+                            component: () => import('@/views/company/allowances.vue')
+                        },
+                        {
+                            path: '/company-payitems',
+                            name: 'company-payitems',
+                            component: () => import('@/views/company/PayItems/payitems.vue')
+                        },
+                        {
+                            path: '/company-create-payitems',
+                            name: 'company-create-payitems',
+                            component: () => import('@/views/company/PayItems/CreatePayItem.vue')
+                        },
+                        {
+                            path: '/company-pay-schedules',
+                            name: 'company-pay-schedules',
+                            component: () => import('@/views/company/PaySchedule/index.vue')
+                        },
+                        {
+                            path: '/company-statutory',
+                            name: 'company-statutory',
+                            component: () => import('@/views/company/statutory.vue')
+                        },
+                        {
+                            path: '/company-salaries',
+                            name: 'company-salaries',
+                            component: () => import('@/views/company/salaries.vue')
+                        },
+                        {
+                            path: '/company-hmrc',
+                            name: 'company-hmrc',
+                            component: () => import('@/views/company/hmrc.vue')
+                        },
+                        {
+                            path: '/company-reports',
+                            name: 'company-reports',
+                            component: () => import('@/views/company/reports/index.vue')
+                        },
+                        {
+                            path: '/company-fps',
+                            name: 'company-fps',
+                            component: () => import('@/views/company/reports/fps.vue')
+                        },
+                        {
+                            path: '/company-eps',
+                            name: 'company-eps',
+                            component: () => import('@/views/company/reports/eps.vue')
+                        },
+                    ]
+
+                },
+                {
+                    path: '/payroll',
+                    name: 'payroll',
+                    children: [
+                        {
+                            path: '/payroll-active',
+                            name: 'payroll-active',
+                            component: () => import('@/views/payroll/active.vue'),
+                        },
+                        {
+                            path: '/payroll-history',
+                            name: 'payroll-history',
+                            component: () => import('@/views/payroll/history.vue'),
+                        },
+                        {
+                            path: '/payroll-archived',
+                            name: 'payroll-archived',
+                            component: () => import('@/views/payroll/archived.vue'),
+                        }
+                    ]
                 },
                 {
                     path: '/employees',
