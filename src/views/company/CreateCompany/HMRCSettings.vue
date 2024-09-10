@@ -9,32 +9,44 @@
                 <div class="grid">
                     <div class="col-12 md:col-4 mt-5">
                         <label for="accountsOfficeReference">Accounts office reference*</label>
-                        <InputText id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <InputText v-model="details.account_office_reference" id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <span v-if="validationErrors.account_office_reference" class="font-medium validation-text p-2">
+                            {{validationErrors.account_office_reference}}
+                        </span>
                     </div>
                     <div class="col-12 md:col-4 mt-5">
                         <label for="accountsOfficeReference">Employer PAYE reference*</label>
-                        <InputText id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <InputText v-model="details.paye_reference" id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <span v-if="validationErrors.paye_reference" class="font-medium validation-text p-2">
+                            {{validationErrors.paye_reference}}
+                        </span>
                     </div>
                 </div>
                 <div class="grid">
                     <div class="col-12 md:col-4 mt-5">
                         <label for="accountsOfficeReference">Unique Taxpayer reference (optional)</label>
-                        <InputText id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <InputText v-model="details.taxpayer_reference" id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <span v-if="validationErrors.taxpayer_reference" class="font-medium validation-text p-2">
+                            {{validationErrors.taxpayer_reference}}
+                        </span>
                     </div>
                 </div>
     
                 <h5>Is your company eligible to the Employement Allowance or the Small Employer's Relief? Check the boxes below if applicable.</h5>
+                <span v-if="validationErrors.employment_allowance" class="font-medium validation-text p-2">
+                    {{validationErrors.employment_allowance}}
+                </span>
                 <p>The former reduces your National Insurance liability while the latter allows you to claim 103% of your employees' statutory payments.</p>
                 <div class="grid mt-4">
                     <div class="col-12 md:col-4">
                         <div class="field-checkbox mb-0">
-                            <Checkbox id="checkOption1" name="option" value="Chicago" v-model="checkboxValue" />
+                            <Checkbox id="checkOption1" name="option" value="eligible_for_employment_allowance" v-model="details.employment_allowance" />
                             <label for="checkOption1">Employement Allowance</label>
                         </div>
                     </div>
                     <div class="col-12 md:col-4">
                         <div class="field-checkbox mb-0">
-                            <Checkbox id="checkOption2" name="option" value="Los Angeles" v-model="checkboxValue" />
+                            <Checkbox id="checkOption2" name="option" value="eligible_for_small_employers_relief" v-model="details.employment_allowance" />
                             <label for="checkOption2">Small Employer's Relief</label>
                         </div>
                     </div>
@@ -42,28 +54,31 @@
     
     
                 <h5>What is your company's bussiness sector?</h5>
+                <span v-if="validationErrors.business_sector" class="font-medium validation-text p-2">
+                    {{validationErrors.business_sector}}
+                </span>
                 <div class="grid mt-4">
                     <div class="col-12 md:col-3">
                         <div class="field-checkbox mb-0">
-                            <Checkbox id="checkOption1" name="option" value="Chicago" v-model="checkboxValue" />
+                            <Checkbox id="checkOption1" name="option" value="agriculture_products" v-model="details.business_sector" />
                             <label for="checkOption1">Agriculture products sector</label>
                         </div>
                     </div>
                     <div class="col-12 md:col-3">
                         <div class="field-checkbox mb-0">
-                            <Checkbox id="checkOption2" name="option" value="Los Angeles" v-model="checkboxValue" />
+                            <Checkbox id="checkOption2" name="option" value="fisheries_and_aquaculture" v-model="details.business_sector" />
                             <label for="checkOption2">Fisheries and Aquaculture sector</label>
                         </div>
                     </div>
                     <div class="col-12 md:col-3">
                         <div class="field-checkbox mb-0">
-                            <Checkbox id="checkOption2" name="option" value="Los Angeles" v-model="checkboxValue" />
+                            <Checkbox id="checkOption2" name="option" value="road_transport" v-model="details.business_sector" />
                             <label for="checkOption2">Road transport sector</label>
                         </div>
                     </div>
                     <div class="col-12 md:col-3">
                         <div class="field-checkbox mb-0">
-                            <Checkbox id="checkOption2" name="option" value="Los Angeles" v-model="checkboxValue" />
+                            <Checkbox id="checkOption2" name="option" value="industrial_other" v-model="details.business_sector" />
                             <label for="checkOption2">Industrial/other sector</label>
                         </div>
                     </div>
@@ -87,15 +102,23 @@
                 <div class="grid">
                     <div class="col-12 md:col-4 mt-5">
                         <label for="accountsOfficeReference">HMRC Gateway ID*</label>
-                        <InputText id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <InputText v-model="details.hmrc_gateway_id" id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="text"/>
+                        <span v-if="validationErrors.hmrc_gateway_id" class="font-medium validation-text p-2">
+                            {{validationErrors.hmrc_gateway_id}}
+                        </span>
                     </div>
                     <div class="col-12 md:col-4 mt-5">
                         <label for="accountsOfficeReference">HMRC Password*</label>
-                        <InputText id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="password"/>
+                        <InputText v-model="details.hmrc_password" id="accountsOfficeReference" optionLabel="accountsOfficeReference" type="password"/>
+                        <span v-if="validationErrors.hmrc_password" class="font-medium validation-text p-2">
+                            {{validationErrors.hmrc_password}}
+                        </span>
                     </div>
                 </div>
     
             </div>
+            <br>
+            <Button @click="saveDetails()" label="Continue" class="mt-5 ml-2"></Button>
         </div>
     </div>
     </template>
@@ -108,6 +131,16 @@
       },
       data() {
         return {
+            validationErrors:[],
+            details:{
+                account_office_reference:'',
+                paye_reference:'',
+                taxpayer_reference:'',
+                employment_allowance:'',
+                business_sector:'',
+                hmrc_gateway_id:'',
+                hmrc_password:'',
+            },
             calendarValue: null,
             isFirstPayday: null,
             isFirstPayroll: null,
@@ -118,6 +151,15 @@
         
       },
       methods: {
+        saveDetails(){
+            const optionalFields = [];
+            this.validationErrors = this.$validateFormData(this.details, optionalFields);
+            if (Object.keys(this.validationErrors).length === 0 ) {
+                this.$emit('saveDetails', this.details);
+            } else {
+                console.log('Validation errors:', this.validationErrors);
+            }
+        },
       }
     }
     </script>

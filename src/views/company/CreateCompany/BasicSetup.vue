@@ -5,23 +5,27 @@
         <div class="col-12 md:col-12 mt-3">
             <h4>First thing first: Tell us about your team</h4>
             <h5>Who is your company planning to pay?</h5>
-            <p>Select all that apply</p>
+            <span v-if="validationErrors.company_payee" class="font-medium validation-text p-2">
+                {{validationErrors.company_payee}}
+            </span>
+
+            <p class="mt-4">Select all that apply</p>
             <div class="grid">
                 <div class="col-12">
                     <div class="field-checkbox mb-0">
-                        <Checkbox id="checkOption1" name="option" value="Chicago" v-model="checkboxValue" />
+                        <Checkbox v-model="details.company_payee" id="checkOption1" name="option" value="planning_to_pay_myself" />
                         <label for="checkOption1">Myself</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="field-checkbox mb-0">
-                        <Checkbox id="checkOption2" name="option" value="Los Angeles" v-model="checkboxValue" />
+                        <Checkbox v-model="details.company_payee" id="checkOption2" name="option" value="planning_to_pay_employees" />
                         <label for="checkOption2">Employees</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="field-checkbox mb-0">
-                        <Checkbox id="checkOption2" name="option" value="Los Angeles" v-model="checkboxValue" />
+                        <Checkbox v-model="details.company_payee" id="checkOption2" name="option" value="no_payment_for_3_months" />
                         <label for="checkOption2">We are not planning to pay anyone for atleast 3 months</label>
                     </div>
                 </div>
@@ -30,22 +34,29 @@
             <div class="grid">
                 <div class="col-12 md:col-12 mt-5">
                     <h5>What's your desired first payday with XEPayroll?</h5>
-                    <p>Not sure? No problem, just give us an estimate. You'll be able to change this date latter.</p>
-                    <Calendar :showIcon="true" :showButtonBar="true" v-model="calendarValue"></Calendar>
+                    <span v-if="validationErrors.first_payday" class="font-medium validation-text p-2">
+                        {{validationErrors.first_payday}}
+                    </span>
+                    <p class="mt-4">Not sure? No problem, just give us an estimate. You'll be able to change this date latter.</p>
+                    <Calendar :showIcon="true" :showButtonBar="true" v-model="details.first_payday"></Calendar>
                 </div>
             </div>
 
-            <h5>Will this be your company's first payday since since 6 April 2024?</h5>
-            <div class="grid">
+            <h5>Will this be your company's first payday since since 6 April 2024?</h5> 
+            <span v-if="validationErrors.is_first_payday_of_year" class="font-medium validation-text p-2">
+                {{validationErrors.is_first_payday_of_year}}
+            </span>
+            
+            <div class="grid mt-4">
                 <div class="col-2 md:col-2">
                     <div class="field-radiobutton mb-0">
-                        <RadioButton id="option1" name="option" value="yes" v-model="isFirstPayday" />
+                        <RadioButton id="option1" name="option" value="yes" v-model="details.is_first_payday_of_year" />
                         <label for="option1">Yes</label>
                     </div>
                 </div>
                 <div class="col-2 md:col-2">
                     <div class="field-radiobutton mb-0">
-                        <RadioButton id="option2" name="option" value="no" v-model="isFirstPayday" />
+                        <RadioButton id="option2" name="option" value="no" v-model="details.is_first_payday_of_year" />
                         <label for="option2">No</label>
                     </div>
                 </div>
@@ -75,8 +86,9 @@
                 </div>
             </div>
             </span>
-
         </div>
+        <br>
+        <Button @click="saveDetails()" label="Continue" class="mt-5 ml-2"></Button>
     </div>
 </div>
 </template>
@@ -89,6 +101,12 @@ export default {
   },
   data() {
     return {
+      validationErrors:[],
+      details:{
+        company_payee:'',
+        first_payday:'',
+        is_first_payday_of_year:''
+      },
         calendarValue: null,
         isFirstPayday: null,
         isFirstPayroll: null,
@@ -99,6 +117,16 @@ export default {
     
   },
   methods: {
+    saveDetails(){
+        this.details.first_payday=this.$moment(this.details.first_payday).format('YYYY-MM-DD');
+        const optionalFields = [];
+        this.validationErrors = this.$validateFormData(this.details, optionalFields);
+        if (Object.keys(this.validationErrors).length === 0 ) {
+            this.$emit('saveDetails', this.details);
+        } else {
+            console.log('Validation errors:', this.validationErrors);
+        }
+    },
   }
 }
 </script>

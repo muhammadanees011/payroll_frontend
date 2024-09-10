@@ -30,6 +30,24 @@ export default {
                                 <h3 class="text-900 lg:text-xl font-medium mb-0 block">£ 20.00</h3>
                             </span>
                         </div>
+                        <div class="mt-4 w-full flex justify-content-between py-3 border-300 border-bottom-1 border-top-1 border-left-1 border-right-1">
+                            <span class="ml-4 mt-3 flex flex-column">
+                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Senior Dev's Sallary</h3>
+                                <span class="text-500 lg:text-sm">Rate per Hour</span>
+                            </span>
+                            <span class="mt-4 ml-5" style="height: 3.5rem; width: 6.5rem">
+                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">£ 20.00</h3>
+                            </span>
+                        </div>
+                        <div class="mt-4 w-full flex justify-content-between py-3 border-300 border-bottom-1 border-top-1 border-left-1 border-right-1">
+                            <span class="ml-4 mt-3 flex flex-column">
+                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Team Lead's Sallary</h3>
+                                <span class="text-500 lg:text-sm">Rate per Hour</span>
+                            </span>
+                            <span class="mt-4 ml-5" style="height: 3.5rem; width: 6.5rem">
+                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">£ 20.00</h3>
+                            </span>
+                        </div>
                         <br>
                         <Button @click="addPayItems()" icon="pi pi-plus" label="Create Salary Type" class="ml-2 mb-2"></Button>
                     </div>

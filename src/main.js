@@ -105,10 +105,12 @@ import TreeSelect from 'primevue/treeselect';
 import TreeTable from 'primevue/treetable';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
-
 import BlockViewer from '@/components/BlockViewer.vue';
-
 import '@/assets/styles.scss';
+import '@/assets/css/main.css';
+import { validateFormData } from '@/helpers/validationHelper';
+import axios from './axios';
+import moment from 'moment';
 
 const app = createApp(App);
 
@@ -117,6 +119,9 @@ app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.use(DialogService);
 app.use(ConfirmationService);
+app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$validateFormData = validateFormData;
+app.config.globalProperties.$moment = moment;
 
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);

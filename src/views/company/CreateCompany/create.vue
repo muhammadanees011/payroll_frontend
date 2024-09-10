@@ -15,12 +15,12 @@
   </div>
 <div class="col-12 md:col-12">
     <div class="card card-w-title">
-        <create-company-details v-if="currentStep==0"/>
-        <basic-setup v-if="currentStep==1"/>
-        <hmrc-settings v-if="currentStep==2"/>
-        <pay-schedule v-if="currentStep==4"/>
+        <create-company-details v-if="currentStep==0" @saveDetails="saveDetails"/>
+        <basic-setup v-if="currentStep==1" @saveDetails="saveDetails"/>
+        <hmrc-settings v-if="currentStep==2" @saveDetails="saveDetails"/>
+        <pay-schedule v-if="currentStep==3" @saveDetails="saveDetails"/>
         <br>
-        <Button @click="nextStep()" label="Continue" class="ml-2 mb-2"></Button>
+        <!-- <Button @click="nextStep()" label="Continue" class="ml-2 mb-2"></Button> -->
     </div>
 </div>
 </template>
@@ -34,10 +34,10 @@ import PaySchedule from "./PaySchedule.vue";
 
 export default {
   components: {
+    StepProgress,
     'basic-setup':BasicSetup,
     'hmrc-settings':HMRCSettings,
     'pay-schedule':PaySchedule,
-    StepProgress,
     'create-company-details':CreateCompanyDetails,
   },
   data() {
@@ -57,10 +57,13 @@ export default {
         { name: 'PLC-Public limited company', code: 'RM' },
         ],
         nestedRouteItems : [
-            'Create Company Details', 'Basic Setup', 'HMRC Setting', 'Automatic Enrollment','Pay Schedule'
+            'Create Company Details', 'Basic Setup', 'HMRC Setting','Pay Schedule'
         ],
 
     }
+  },
+  mounted(){
+    this.getStep();
   },
   computed: {
     
@@ -68,7 +71,35 @@ export default {
   methods: {
     nextStep(){
         this.currentStep = this.currentStep+1;  
-    }
+    },
+    //-----------SAVE COMPANY DETAILS----------
+    async saveDetails(data){
+        const apiUrl = `/create-company`;
+        try {
+        let response=await this.$axios.post(apiUrl,data);
+        console.log(response)
+        this.currentStep= this.currentStep + 1;
+        } catch (error) {
+        let errors=error.response.data.errors
+        console.log('errors',errors)
+        }
+    },
+    //-----------GET STEP------------
+    async getStep(){
+        const step = localStorage.getItem('step');
+        if (step && step==4) {
+            this.$router.go(-1); 
+        }
+        const apiUrl = `/get-step`;
+        try {
+        let response=await this.$axios.get(apiUrl);
+        this.currentStep= response.data.step;
+        localStorage.setItem('step', this.currentStep)
+        } catch (error) {
+        let errors=error.response.data.errors
+        console.log('errors',errors)
+        }
+    },
   }
 }
 </script>

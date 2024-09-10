@@ -179,14 +179,14 @@ watch(
 
         <div class="col-12 xl:col-6">
             <div class="card">
-                <h5>Recent Sales</h5>
+                <h5>Recent Payrolls</h5>
                 <DataTable :value="products" :rows="5" :paginator="true" responsiveLayout="scroll">
-                    <Column style="width: 15%">
+                    <!-- <Column style="width: 15%">
                         <template #header> Image </template>
                         <template #body="slotProps">
                             <img :src="'demo/images/product/' + slotProps.data.image" :alt="slotProps.data.image" width="50" class="shadow-2" />
                         </template>
-                    </Column>
+                    </Column> -->
                     <Column field="name" header="Name" :sortable="true" style="width: 35%"></Column>
                     <Column field="price" header="Price" :sortable="true" style="width: 35%">
                         <template #body="slotProps">
@@ -203,7 +203,7 @@ watch(
             </div>
             <div class="card">
                 <div class="flex justify-content-between align-items-center mb-5">
-                    <h5>Best Selling Products</h5>
+                    <h5>Top-Payroll Allowances</h5>
                     <div>
                         <Button icon="pi pi-ellipsis-v" class="p-button-text p-button-plain p-button-rounded" @click="$refs.menu2.toggle($event)"></Button>
                         <Menu ref="menu2" :popup="true" :model="items"></Menu>
@@ -212,8 +212,8 @@ watch(
                 <ul class="list-none p-0 m-0">
                     <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                         <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Space T-Shirt</span>
-                            <div class="mt-1 text-600">Clothing</div>
+                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Travel Allowances</span>
+                            <div class="mt-1 text-600">Small Allowances</div>
                         </div>
                         <div class="mt-2 md:mt-0 flex align-items-center">
                             <div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height: 8px">
@@ -224,8 +224,8 @@ watch(
                     </li>
                     <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                         <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Portal Sticker</span>
-                            <div class="mt-1 text-600">Accessories</div>
+                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Marriage Allowance</span>
+                            <div class="mt-1 text-600"></div>
                         </div>
                         <div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
                             <div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height: 8px">
@@ -236,8 +236,8 @@ watch(
                     </li>
                     <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                         <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Supernova Sticker</span>
-                            <div class="mt-1 text-600">Accessories</div>
+                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Travel Allowances</span>
+                            <div class="mt-1 text-600"></div>
                         </div>
                         <div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
                             <div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height: 8px">
@@ -248,7 +248,7 @@ watch(
                     </li>
                     <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                         <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Wonders Notebook</span>
+                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Personal Allowance</span>
                             <div class="mt-1 text-600">Office</div>
                         </div>
                         <div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
@@ -260,7 +260,7 @@ watch(
                     </li>
                     <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                         <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Mat Black Case</span>
+                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Personal Allowance</span>
                             <div class="mt-1 text-600">Accessories</div>
                         </div>
                         <div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
@@ -272,8 +272,8 @@ watch(
                     </li>
                     <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                         <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Robots T-Shirt</span>
-                            <div class="mt-1 text-600">Clothing</div>
+                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Personal Allowance</span>
+                            <div class="mt-1 text-600">Travel</div>
                         </div>
                         <div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
                             <div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height: 8px">
@@ -287,7 +287,7 @@ watch(
         </div>
         <div class="col-12 xl:col-6">
             <div class="card">
-                <h5>Sales Overview</h5>
+                <h5>Payroll Overview</h5>
                 <Chart type="line" :data="lineData" :options="lineOptions" />
             </div>
             <div class="card">
@@ -307,7 +307,7 @@ watch(
                         </div>
                         <span class="text-900 line-height-3"
                             >Richard Jones
-                            <span class="text-700">has purchased a blue t-shirt for <span class="text-blue-500">79$</span></span>
+                            <span class="text-700">has created a new payroll for <span class="text-blue-500">5579$</span></span>
                         </span>
                     </li>
                     <li class="flex align-items-center py-2">
@@ -326,7 +326,7 @@ watch(
                         </div>
                         <span class="text-900 line-height-3"
                             >Keyser Wick
-                            <span class="text-700">has purchased a black jacket for <span class="text-blue-500">59$</span></span>
+                            <span class="text-700">has submitted an FPS (Full Payment Submission) for <span class="text-blue-500">5559$</span></span>
                         </span>
                     </li>
                     <li class="flex align-items-center py-2 border-bottom-1 surface-border">
@@ -335,7 +335,7 @@ watch(
                         </div>
                         <span class="text-900 line-height-3"
                             >Jane Davis
-                            <span class="text-700">has posted a new questions about your product.</span>
+                            <span class="text-700">has posted a new Employee.</span>
                         </span>
                     </li>
                 </ul>
@@ -346,7 +346,7 @@ watch(
             >
                 <div>
                     <div class="text-blue-100 font-medium text-xl mt-2 mb-3">TAKE THE NEXT STEP</div>
-                    <div class="text-white font-medium text-5xl">Try PrimeBlocks</div>
+                    <div class="text-white font-medium text-5xl">Try Now Top-Payroll</div>
                 </div>
                 <div class="mt-4 mr-auto md:mt-0 md:mr-0">
                     <a href="https://www.primefaces.org/primeblocks-vue" class="p-button font-bold px-5 py-3 p-button-warning p-button-rounded p-button-raised"> Get Started </a>

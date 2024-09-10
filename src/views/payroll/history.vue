@@ -150,10 +150,10 @@ export default {
   data() {
     return {
       employees: [
-        { id: 1, name: 'John Doe', customer: 'ABC Corp', date: '2021-09-01', amount: 1200.00, status: 'Active' },
-        { id: 2, name: 'Jane Smith', customer: 'XYZ Inc', date: '2021-09-02', amount: 1100.00, status: 'In-Active' },
-        { id: 3, name: 'Emily Johnson', customer: 'Example LLC', date: '2021-09-03', amount: 900.00, status: 'In-Active' },
-        { id: 4, name: 'Michael Brown', customer: 'Test Industries', date: '2021-09-04', amount: 1300.00, status: 'Active' }
+        { id: 1, name: 'John Doe', customer: 'Final Payroll', date: '2021-01-03', amount: 551200.00, status: 'Completed' },
+        { id: 2, name: 'Jane Smith', customer: 'Adjustment Payroll', date: '2021-02-02', amount: 651100.00, status: 'Completed' },
+        { id: 3, name: 'Emily Johnson', customer: 'Weekly Payroll', date: '2021-03-03', amount: 54900.00, status: 'Completed' },
+        { id: 4, name: 'Michael Brown', customer: 'Monthly Payroll', date: '2021-04-04', amount: 441300.00, status: 'Completed' }
       ]
     };
   },

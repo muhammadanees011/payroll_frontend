@@ -5,11 +5,11 @@
             <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
-                        <span class="text-600 font-medium">Sign in now to continue</span>
+                        <span class="text-600 font-medium">Enter Email to reset password</span>
                     </div>
 
                     <div v-if="isSuccess" class="text-center mb-5 pt-2 pb-2" style="background-color: #80D1B4; border-radius: 5px !important;">
-                        <span class="text-white font-medium">Logged-In Successfully</span>
+                        <span class="text-white font-medium">Security code has been successfully sent</span>
                     </div>
 
                     <div v-if="isErrors" class="text-center mb-5 pt-2 pb-2" style="background-color: #E88D58; border-radius: 5px !important;">
@@ -21,22 +21,9 @@
 
                     <div>
                         <label for="email1" class="block text-900 text-xl font-medium">Email</label>
-                        <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="userData.email" />
+                        <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem; width: 100% !important;" v-model="userData.email" />
 
-                        <label for="password" class="block text-900 font-medium text-xl">Password</label>
-                        <Password id="password" v-model="userData.password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
-                       
-                        <div class="flex align-items-center justify-content-between mb-5 gap-5">
-                            <div class="flex align-items-center">
-                                <a @click="signup()" class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Don't have an account? SingUp</a>
-
-                                <!-- <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
-                                <label for="rememberme1">Remember me</label> -->
-                            </div>
-                            <a @click="ForgetPassword()" class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
-                        </div>
-
-                        <Button label="Sign In" @click="login()" class="w-full p-3 text-xl"></Button>
+                        <Button label="Send Code" @click="ForgetPassword()" class="w-full p-3 text-xl"></Button>
                     </div>
                 </div>
             </div>
@@ -60,7 +47,6 @@ export default {
             isErrors:false,
             userData:{
             email: '',
-            password: '',
             },
         };
     },
@@ -75,29 +61,18 @@ export default {
     },
     methods: {
         //-----------Register user-----------
-        async login(){
-            const apiUrl = `/login`;
+        async ForgetPassword(){
+            const apiUrl = `/forgot_password`;
             try {
-            let response=await this.$axios.post(apiUrl,this.userData);
-            let user = response.data ? response.data.user : null
-            let token = response.data ? response.data.access_token : null
-            localStorage.setItem('user',  JSON.stringify(user))
-            localStorage.setItem('token', token)
+            await this.$axios.post(apiUrl,this.userData);
             this.isErrors=false
             this.isSuccess=true
-            this.$router.push({ name: 'dashboard' });
+            this.$router.push({ name: 'ForgetPasswordCode', params: { email: this.userData.email } });
             } catch (error) {
             this.errors=error.response.data.errors
             this.isSuccess=false
             this.isErrors=true
             }
-        },
-        signup(){
-            this.$router.push({ name: 'register' });  
-        },
-        //-----------Forget Password-----------
-        ForgetPassword(){
-            this.$router.push({ name: 'ForgetPassword' });
         },
     }
 };

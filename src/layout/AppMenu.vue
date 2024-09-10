@@ -15,7 +15,7 @@ const model = ref([
       items: [
 
       {
-          label: 'Home',
+          label: 'Home (upcoming)',
           icon: 'pi pi-fw pi-home',
       },
 
@@ -93,7 +93,7 @@ const model = ref([
       },
 
       {
-          label: 'Auto Enrollment',
+          label: 'Auto Enrollment (upcoming)',
           icon: 'pi pi-fw pi-id-card',
       },
 

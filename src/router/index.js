@@ -1,12 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
 
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
             path: '/',
             component: AppLayout,
+            meta: {
+                title: 'Company',
+                requiresAuth: true,
+            },
             children: [
                 {
                     path: '/',
@@ -143,17 +148,40 @@ const router = createRouter({
                 },
             ]
         },
+        // {
+        //     path: '/landing',
+        //     name: 'landing',
+        //     component: () => import('@/views/pages/Landing.vue')
+        // },
         {
-            path: '/landing',
-            name: 'landing',
-            component: () => import('@/views/pages/Landing.vue')
+            path: '/register',
+            name: 'register',
+            component: () => import('@/views/pages/auth/Register.vue')
         },
-
-
         {
-            path: '/auth/login',
+            path: '/login',
             name: 'login',
             component: () => import('@/views/pages/auth/Login.vue')
+        },
+        {
+            path: '/verify-email/:email',
+            name: 'VerifyEmail',
+            component: () => import('@/views/pages/auth/EmailVerification.vue')
+        },
+        {
+            path: '/forget-password',
+            name: 'ForgetPassword',
+            component: () => import('@/views/pages/auth/ForgetPassword.vue')
+        },
+        {
+            path: '/forget-password-code/:email',
+            name: 'ForgetPasswordCode',
+            component: () => import('@/views/pages/auth/ForgetPasswordCode.vue')
+        },
+        {
+            path: '/reset-password/:email',
+            name: 'ResetPassword',
+            component: () => import('@/views/pages/auth/ResetPassword.vue')
         },
         {
             path: '/auth/access',
@@ -167,5 +195,17 @@ const router = createRouter({
         }
     ]
 });
+
+
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title || 'XEPayroll'
+    if (to.meta.requiresAuth && !localStorage.getItem('token')) {
+        next({ name: 'login' })
+    } else if (localStorage.getItem('token') && (to.name === 'login' || to.name === 'Register')) {
+        next({ name: 'Dashboard' })
+    } else {
+        next()
+    }
+})
 
 export default router;

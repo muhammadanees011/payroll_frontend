@@ -1,25 +1,3 @@
-<script setup>
-import { ref } from "vue";
-import StepProgress from 'vue-step-progress';
-const checkboxValue = ref([]);
-const dropdownValue = ref(null);
-const currentStep = ref(0);
-const dropdownValues = ref([
-    { name: 'LTD-Private limited company', code: 'NY' },
-    { name: 'LLP-Limited liability partnership', code: 'RM' },
-    { name: 'LIMITED-PARTNERSHIP-Limited partnership', code: 'LDN' },
-    { name: 'NORTHEREN-IRELAND-Northeren ireland company', code: 'IST' },
-    { name: 'NORTHEREN-IRELAND-OTHER-Credit union (Northeren ireland)', code: 'PRS' },
-    { name: 'OLD-PUBLIC-COMPANY-Old public company', code: 'RM' },
-    { name: 'OTHER-Other company type', code: 'RM' },
-    { name: 'OVERSEA-COMPANY-Overseas company', code: 'RM' },
-    { name: 'PLC-Public limited company', code: 'RM' },
-]);
-const nestedRouteItems = ref([
-    'Create Company Details', 'Basic Setup','Pay Schedule','Adding Employees' 
-]);
-</script>
-
 <template>
   <!-- company details form -->
   <div>
@@ -28,11 +6,17 @@ const nestedRouteItems = ref([
         <div class="formgrid grid">
           <div class="field col-4">
             <label for="companyName">Company/Business name*</label>
-            <InputText id="companyName" optionLabel="companyName" type="text" style="width:100%;height:45px" />
+            <InputText v-model="details.name" id="companyName" optionLabel="companyName" type="text" style="width:100%;height:45px" />
+            <span v-if="validationErrors.name" class="font-medium validation-text p-2">
+              {{validationErrors.name}}
+            </span>
           </div>
           <div class="field col-4">
             <label for="name2">Legal Structure*</label>
-            <Dropdown v-model="dropdownValue" :options="dropdownValues" optionLabel="name" placeholder="Select" style="width:100%;height:45px" />
+            <Dropdown v-model="details.legal_structure" :options="dropdownValues" optionLabel="name" placeholder="Select" style="width:100%;height:45px" />
+            <span v-if="validationErrors.legal_structure" class="font-medium validation-text p-2">
+              {{validationErrors.legal_structure}}
+            </span>
           </div>
       </div>
     </div>
@@ -42,11 +26,17 @@ const nestedRouteItems = ref([
       <div class="formgrid grid">
         <div class="field col-4">
           <label for="yourpostCode">Type your postcode</label>
-          <InputText id="yourpostCode" optionLabel="yourpostCode" type="text" style="width:100%;height:45px" />
+          <InputText v-model="details.post_code" id="yourpostCode" optionLabel="yourpostCode" type="text" style="width:100%;height:45px" />
+          <span v-if="validationErrors.post_code" class="font-medium validation-text p-2">
+              {{validationErrors.post_code}}
+          </span>
         </div>
         <div class="field col-4">
           <label for="postCode">Postcode*</label>
-          <InputText id="postCode" optionLabel="postCode" type="text" style="width:100%;height:45px" />
+          <InputText  v-model="details.post_code" id="postCode" optionLabel="postCode" type="text" style="width:100%;height:45px" />
+          <span v-if="validationErrors.post_code" class="font-medium validation-text p-2">
+              {{validationErrors.post_code}}
+          </span>
         </div>
       </div>
     </div>
@@ -56,11 +46,17 @@ const nestedRouteItems = ref([
       <div class="formgrid grid">
         <div class="field col-4">
           <label for="address1">Address Line 1*</label>
-          <InputText id="address1" optionLabel="address1" type="text" style="width:100%;height:45px" />
+          <InputText  v-model="details.address_line_1" id="address1" optionLabel="address1" type="text" style="width:100%;height:45px" />
+          <span v-if="validationErrors.address_line_1" class="font-medium validation-text p-2">
+              {{validationErrors.address_line_1}}
+          </span>
         </div>
         <div class="field col-4">
           <label for="address2">Address Line 2</label>
-          <InputText id="address2" optionLabel="address2" type="text" style="width:100%;height:45px" />
+          <InputText  v-model="details.address_line_2" id="address2" optionLabel="address2" type="text" style="width:100%;height:45px" />
+          <span v-if="validationErrors.address_line_2" class="font-medium validation-text p-2">
+              {{validationErrors.address_line_2}}
+          </span>
         </div>
       </div>
     </div>
@@ -71,7 +67,11 @@ const nestedRouteItems = ref([
         <div class="field col-12">
           <label for="address2">City*</label>
           <br>
-          <InputText id="address2" optionLabel="address2" type="text" style="width:29%;height:45px" />
+          <InputText  v-model="details.city" id="address2" optionLabel="address2" type="text" style="width:29%;height:45px" />
+          <br>
+          <span v-if="validationErrors.city" class="font-medium validation-text p-2">
+              {{validationErrors.city}}
+          </span>
         </div>
       </div>
     </div>
@@ -84,7 +84,11 @@ const nestedRouteItems = ref([
         <div class="field col-12">
           <label for="dir">Full Name*</label>
           <br>
-          <InputText id="address2" optionLabel="address2" type="text" style="width:29%;height:45px" />
+          <InputText  v-model="details.director_name" id="address2" optionLabel="address2" type="text" style="width:29%;height:45px" />
+          <br>
+          <span v-if="validationErrors.director_name" class="font-medium validation-text p-2">
+              {{validationErrors.director_name}}
+          </span>
         </div>
       </div>
     </div>
@@ -94,19 +98,75 @@ const nestedRouteItems = ref([
   <div class="grid">
       <div class="col-12">
           <div class="field-checkbox mb-0">
-              <Checkbox id="checkOption1" name="option" value="Chicago" v-model="checkboxValue" />
+              <Checkbox id="checkOption1" name="option" value="authorized_to_act" v-model="details.authorized_to_act" />
               <label for="checkOption1">I confirm that I'm authorised to act on behalf of the company</label>
           </div>
+          <span v-if="validationErrors.authorized_to_act" class="font-medium validation-text p-2 ml-4">
+            {{validationErrors.authorized_to_act}}
+          </span>
       </div>
       <div class="col-12">
           <div class="field-checkbox mb-0">
-              <Checkbox id="checkOption2" name="option" value="Los Angeles" v-model="checkboxValue" />
+              <Checkbox id="checkOption2" name="option" 
+              value="agreed_to_terms" v-model="details.agreed_to_terms" />
               <label for="checkOption2">I confirm that I have read and agreed the terms and conditions</label>
           </div>
+          <span v-if="validationErrors.agreed_to_terms" class="font-medium validation-text p-2 ml-4">
+            {{validationErrors.agreed_to_terms}}
+          </span>
       </div>
   </div>
+  <br>
+  <Button @click="saveDetails()" label="Continue" class="mt-5 ml-2"></Button>
+
 </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      validationErrors:[],
+      details:{
+        name:'',
+        legal_structure:'',
+        post_code:'',
+        address_line_1:'',
+        address_line_2:'',
+        city:'',
+        director_name:'',
+        authorized_to_act:false,
+        agreed_to_terms:false
+      },
+      checkboxValue: [],
+      dropdownValue: null,
+      dropdownValues: [
+        { name: 'LTD-Private limited company', code: 'NY' },
+        { name: 'LLP-Limited liability partnership', code: 'RM' },
+        { name: 'LIMITED-PARTNERSHIP-Limited partnership', code: 'LDN' },
+        { name: 'NORTHEREN-IRELAND-Northeren ireland company', code: 'IST' },
+        { name: 'NORTHEREN-IRELAND-OTHER-Credit union (Northeren ireland)', code: 'PRS' },
+        { name: 'OLD-PUBLIC-COMPANY-Old public company', code: 'RM' },
+        { name: 'OTHER-Other company type', code: 'RM' },
+        { name: 'OVERSEA-COMPANY-Overseas company', code: 'RM' },
+        { name: 'PLC-Public limited company', code: 'RM' },
+      ],
+    };
+  },
+  methods:{
+    saveDetails(){
+      const optionalFields = ['address_line_2','authorized_to_act','agreed_to_terms'];
+      this.validationErrors = this.$validateFormData(this.details, optionalFields);
+      if (Object.keys(this.validationErrors).length === 0 ) {
+        this.$emit('saveDetails', this.details);
+      } else {
+        console.log('Validation errors:', this.validationErrors);
+      }
+    },
+  },
+};
+</script>
+
 
 <style scoped lang="scss">
 ::v-deep .step-progress__wrapper-before,
