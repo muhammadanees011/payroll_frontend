@@ -23,7 +23,7 @@ export default {
                     <div class="w-full surface-card py-8 px-5 sm:px-8 flex flex-column align-items-center" style="border-radius: 53px">
                         <div class="mt-4 w-full flex justify-content-between py-3 border-300 border-bottom-1 border-top-1 border-left-1 border-right-1">
                             <span class="ml-4 mt-3 flex flex-column">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Junior Dev's Sallary</h3>
+                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Junior Dev's Salary</h3>
                                 <span class="text-500 lg:text-sm">Rate per Hour</span>
                             </span>
                             <span class="mt-4 ml-5" style="height: 3.5rem; width: 6.5rem">
@@ -32,7 +32,7 @@ export default {
                         </div>
                         <div class="mt-4 w-full flex justify-content-between py-3 border-300 border-bottom-1 border-top-1 border-left-1 border-right-1">
                             <span class="ml-4 mt-3 flex flex-column">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Senior Dev's Sallary</h3>
+                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Senior Dev's Salary</h3>
                                 <span class="text-500 lg:text-sm">Rate per Hour</span>
                             </span>
                             <span class="mt-4 ml-5" style="height: 3.5rem; width: 6.5rem">
@@ -41,7 +41,7 @@ export default {
                         </div>
                         <div class="mt-4 w-full flex justify-content-between py-3 border-300 border-bottom-1 border-top-1 border-left-1 border-right-1">
                             <span class="ml-4 mt-3 flex flex-column">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Team Lead's Sallary</h3>
+                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Team Lead's Salary</h3>
                                 <span class="text-500 lg:text-sm">Rate per Hour</span>
                             </span>
                             <span class="mt-4 ml-5" style="height: 3.5rem; width: 6.5rem">

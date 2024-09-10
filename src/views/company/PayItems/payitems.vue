@@ -59,7 +59,7 @@ export default {
                         <div class="w-full flex align-items-center py-5 border-300 border-bottom-1">
                             
                             <span class="ml-4 flex flex-column">
-                                <span class="lg:text-xl font-medium mb-0 block" style="color:#1F9A72;">Recurring <span class="lg:text-sm" style="color:#1F9A72;">(Available Soon)</span></span>
+                                <span class="lg:text-xl font-medium mb-0 block" style="color:#1F9A72;">Recurring <span class="lg:text-sm" style="color:#1F9A72;"></span></span>
                                 <span class="lg:text-sm">Create recurring pay items that you can apply to employees and have
                                     them automatically be added to future payrolls. ( Runs until cancelled )</span>
                                 </span>
