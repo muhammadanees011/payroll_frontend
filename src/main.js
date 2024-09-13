@@ -111,6 +111,10 @@ import '@/assets/css/main.css';
 import { validateFormData } from '@/helpers/validationHelper';
 import axios from './axios';
 import moment from 'moment';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import { showConfirmation } from './helpers/confirmationHelper';
+import { showToast } from './helpers/showToastHelper';
 
 const app = createApp(App);
 
@@ -122,6 +126,9 @@ app.use(ConfirmationService);
 app.config.globalProperties.$axios = axios;
 app.config.globalProperties.$validateFormData = validateFormData;
 app.config.globalProperties.$moment = moment;
+app.use(VueSweetalert2);
+app.config.globalProperties.$showConfirmation = showConfirmation;
+app.config.globalProperties.$showToast = showToast;
 
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);

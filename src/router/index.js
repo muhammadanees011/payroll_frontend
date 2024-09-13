@@ -43,14 +43,29 @@ const router = createRouter({
                             component: () => import('@/views/company/PayItems/payitems.vue')
                         },
                         {
-                            path: '/company-create-payitems',
+                            path: '/company-payitems-create',
                             name: 'company-create-payitems',
                             component: () => import('@/views/company/PayItems/CreatePayItem.vue')
+                        },
+                        {
+                            path: '/company-payitems-edit/:id',
+                            name: 'company-edit-payitems',
+                            component: () => import('@/views/company/PayItems/EditPayItem.vue')
                         },
                         {
                             path: '/company-pay-schedules',
                             name: 'company-pay-schedules',
                             component: () => import('@/views/company/PaySchedule/index.vue')
+                        },
+                        {
+                            path: '/company-create-pay-schedules',
+                            name: 'company-create-pay-schedules',
+                            component: () => import('@/views/company/PaySchedule/CreatePaySchedule.vue')
+                        },
+                        {
+                            path: '/company-edit-pay-schedules/:id',
+                            name: 'company-edit-pay-schedules',
+                            component: () => import('@/views/company/PaySchedule/EditPaySchedule.vue')
                         },
                         {
                             path: '/company-statutory',
@@ -60,7 +75,12 @@ const router = createRouter({
                         {
                             path: '/company-salaries',
                             name: 'company-salaries',
-                            component: () => import('@/views/company/salaries.vue')
+                            component: () => import('@/views/company/Salaries/index.vue')
+                        },
+                        {
+                            path: '/company-create-salaries',
+                            name: 'company-create-salaries',
+                            component: () => import('@/views/company/Salaries/CreateSalary.vue')
                         },
                         {
                             path: '/company-hmrc',

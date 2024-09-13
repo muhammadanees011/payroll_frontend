@@ -1,9 +1,8 @@
 
 <template>
-  <h2 class="ml-3">Create Company</h2>
   <div class="col-12 md:col-12">
     <div class="card card-w-title">
-      <h4>Steps</h4>
+      <h5>Create Company</h5>
       <p>Follow the five steps below to add a new Company. {{ selectedStep }}<br/>
         Please make sure all information is accurate.</p>
         <step-progress :steps="nestedRouteItems" :current-step="currentStep"
@@ -57,7 +56,7 @@ export default {
         { name: 'PLC-Public limited company', code: 'RM' },
         ],
         nestedRouteItems : [
-            'Create Company Details', 'Basic Setup', 'HMRC Setting','Pay Schedule'
+            'Company Details', 'Basic Setup', 'HMRC Setting','Pay Schedule'
         ],
 
     }

@@ -1,6 +1,7 @@
 <template>
     <!-- company details form -->
-    <div>
+    <div class="col-12 md:col-12">
+      <div class="card card-w-title">
     <div class="grid">
       <div class="col-12 md:col-12 ">
           <div class="formgrid grid">
@@ -117,8 +118,9 @@
         </div>
     </div>
     <br>
-    <Button @click="saveDetails()" label="Continue" class="mt-5 ml-2"></Button>
+    <Button @click="validateData()" label="Save" class="mt-5 ml-2"></Button>
   
+  </div>
   </div>
   </template>
   
@@ -141,15 +143,15 @@
         checkboxValue: [],
         dropdownValue: null,
         dropdownValues: [
-          { name: 'LTD-Private limited company', code: 'NY' },
-          { name: 'LLP-Limited liability partnership', code: 'RM' },
-          { name: 'LIMITED-PARTNERSHIP-Limited partnership', code: 'LDN' },
-          { name: 'NORTHEREN-IRELAND-Northeren ireland company', code: 'IST' },
-          { name: 'NORTHEREN-IRELAND-OTHER-Credit union (Northeren ireland)', code: 'PRS' },
-          { name: 'OLD-PUBLIC-COMPANY-Old public company', code: 'RM' },
-          { name: 'OTHER-Other company type', code: 'RM' },
-          { name: 'OVERSEA-COMPANY-Overseas company', code: 'RM' },
-          { name: 'PLC-Public limited company', code: 'RM' },
+          { name: 'LTD-Private limited company', code: 'LTD-Private limited company' },
+          { name: 'LLP-Limited liability partnership', code: 'LLP-Limited liability partnership' },
+          { name: 'LIMITED-PARTNERSHIP-Limited partnership', code: 'LIMITED-PARTNERSHIP-Limited partnership' },
+          { name: 'NORTHEREN-IRELAND-Northeren ireland company', code: 'NORTHEREN-IRELAND-Northeren ireland company' },
+          { name: 'NORTHEREN-IRELAND-OTHER-Credit union (Northeren ireland)', code: 'NORTHEREN-IRELAND-OTHER-Credit union (Northeren ireland)' },
+          { name: 'OLD-PUBLIC-COMPANY-Old public company', code: 'OLD-PUBLIC-COMPANY-Old public company' },
+          { name: 'OTHER-Other company type', code: 'OTHER-Other company type' },
+          { name: 'OVERSEA-COMPANY-Overseas company', code: 'OVERSEA-COMPANY-Overseas company' },
+          { name: 'PLC-Public limited company', code: 'PLC-Public limited company' },
         ],
       };
     },
@@ -157,15 +159,17 @@
         this.getCompanyDetails()
     },
     methods:{
-      saveDetails(){
-        const optionalFields = ['address_line_2','authorized_to_act','agreed_to_terms'];
+
+      validateData(){
+        const optionalFields = [];
         this.validationErrors = this.$validateFormData(this.details, optionalFields);
         if (Object.keys(this.validationErrors).length === 0 ) {
-          this.$emit('saveDetails', this.details);
+          this.saveDetails()
         } else {
           console.log('Validation errors:', this.validationErrors);
         }
       },
+
       //-------------Get Company Details---------------
       async getCompanyDetails(){
         const apiUrl = `/get-company-details`;
@@ -173,7 +177,7 @@
         let response=await this.$axios.get(apiUrl);
         response=response.data
         this.details.name=response.name
-        // this.details.legal_structure=[{'name':response.legal_structure}]
+        this.details.legal_structure={name:response.legal_structure, code:response.legal_structure}
         this.details.post_code=response.post_code
         this.details.address_line_1=response.address_line_1
         this.details.address_line_2=response.address_line_2
@@ -186,6 +190,19 @@
         console.log('errors',errors)
         }
       },
+
+      //-----------SAVE COMPANY DETAILS----------
+      async saveDetails(){
+          const apiUrl = `/update-company-details`;
+          try {
+          let response=await this.$axios.post(apiUrl,this.details);
+          this.$showToast('success','Company Details updated successfully.');
+          } catch (error) {
+          let errors=error.response.data.errors
+          console.log('errors',errors)
+          }
+      },
+
     },
   };
   </script>

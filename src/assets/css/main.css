@@ -1,3 +1,34 @@
 .validation-text{
     color: #FF7074 !important;
 }
+.swal2-popup {
+    height: 200px;
+    width: 330px;
+    background-color: #FFFFFF;
+}
+.swal2-html-container{
+    overflow: hidden !important;
+}
+.swal2-title{
+    font-size: 14px;
+}
+.swal2-icon{
+    font-size: 7px;
+}
+.swal2-confirm{
+    background-color: #40A785 !important;
+}
+.swal2-deny{
+    background-color: #9e1b32 !important;
+}
+
+
+.toast-success .swal2-popup {
+    height: 85px !important;
+    overflow: hidden !important;
+}
+.toast-error .swal2-popup {
+    height: 85px !important;
+    overflow: hidden !important;
+}
+  

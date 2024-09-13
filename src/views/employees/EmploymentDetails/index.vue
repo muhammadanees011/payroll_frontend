@@ -31,14 +31,14 @@ const radioValue = ref(null);
 
         <div class="field col-6">
           <label for="Forename">Payment Schedule*</label>
-          <Dropdown v-model="payment" :options="paymentSchedule" optionLabel="name" placeholder="Select" style="width:100%" />
+          <Dropdown v-model="payment" :options="paymentSchedule" optionLabel="name" placeholder="Select" style="width:100%;height:45px;"  />
         </div>
       </div>
       <div class="formgrid grid mt-3">
 
         <div class="field col-6">
           <label for="Forename">Salary Type*:</label>
-          <Dropdown v-model="salary" :options="salaryTypes" optionLabel="name" placeholder="Select" style="width:100%" />
+          <Dropdown v-model="salary" :options="salaryTypes" optionLabel="name" placeholder="Select" style="width:100%;height:45px;"  />
 
         </div>
       </div>
