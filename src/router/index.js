@@ -136,36 +136,6 @@ const router = createRouter({
                     name: 'AddEmployee',
                     component: () => import('@/views/employees/add/index.vue')
                 },
-                {
-                    path: '/personal/details',
-                    name: 'PersonalDetails',
-                    component: () => import('@/views/employees/personal/index.vue')
-                },
-
-                {
-                    path: '/employees/add',
-                    name: 'AddEmployee',
-                    component: () => import('@/views/employees/add/index.vue'),
-                    children: [
-                        {
-                            path: '/employees/add',
-                            component: () => import('@/views/employees/personal/index.vue')
-                        },
-                    ]
-                },
-                {
-                    path: '/employees/add',
-                    name: 'AddEmployee',
-                    component: () => import('@/views/employees/add/index.vue'),
-                },
-                {
-                    path: '/employees/personal',
-                    component: () => import('@/views/employees/personal/index.vue')
-                },
-                {
-                    path: '/employees/EmploymentDetails',
-                    component: () => import('@/views/employees/EmploymentDetails/index.vue')
-                },
             ]
         },
         // {

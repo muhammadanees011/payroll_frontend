@@ -1,79 +1,116 @@
-<template>
+<script setup>
+import { ref } from "vue";
 
+const titleValues = ref([
+  { name: 'Mr', code: 'Mr' },
+  { name: 'Mrs', code: 'Mrs' },
+]);
+const genderValues = ref([
+  { name: 'Male', code: 'male'},
+  { name: 'Female',code: 'female'},
+]);
+const title = ref(null);
+const gender = ref(null);
 
-    <!-- Dynamic Component rendering based on current step -->
-    <div class="col-12 md:col-12">
-      <div class="card card-w-title">
-        <h5>Adding a new employee</h5>
-        <p class="mb-3">Follow the three steps below to add a new employee to your company payroll.<br/>
-          Please make sure all information is accurate.</p>
-
-        <step-progress :steps="nestedRouteItems" :current-step="currentStep"
-         active-color="green"
-         active-thickness=5
-         line-thickness=5
-         icon-class="fa fa-check"></step-progress>
-        </div>
-
-        <div class="col-12 md:col-12">
-            <div class="card card-w-title">
-                <personal-details v-if="currentStep==0" @saveDetails="saveDetails"/>
-                <employment-details v-if="currentStep==1" @saveDetails="saveDetails"/>
-                <starter-details v-if="currentStep==2" @saveDetails="saveDetails"/>
-                <br>
-                <Button label="Save And Finish Later" severity="secondary" class="mb-2 mr-2"></Button>
-                <Button @click="nextStep()" label="Continue" class="ml-2 mb-2"></Button>
-            </div>
-        </div>
-
-    </div>
-
-</template>
-
-<script>
-import PersonalDetails from '././personal.vue';
-import EmploymentDetails from '././EmploymentDetails.vue';
-import StarterDetails from '././StarterDetails.vue';
-import StepProgress from 'vue-step-progress';
-
-export default {
-  components: {
-    StepProgress,
-    'personal-details':PersonalDetails,
-    'employment-details':EmploymentDetails,
-    'starter-details':StarterDetails
-  },
-  data() {
-    return {
-      nestedRouteItems : [
-        'Personal Details', 'Employment Details', 'Starter Details'
-      ],
-      mySteps: [
-        { label: 'Personal Details', component: 'PersonalDetails' },
-        { label: 'Employment Details', component: 'EmploymentDetails' },
-        { label: 'Complete', component: 'CompletionDetails' },
-      ],
-      currentStep: 0  // Starting with the first step
-    }
-  },
-  computed: {
-    currentComponent() {
-      return this.mySteps[this.currentStep].component;
-    }
-  },
-  methods: {
-    nextStep(){
-        this.currentStep = this.currentStep+1;  
-    },
-    setActiveStep(index) {
-      console.log("Step clicked:", index);
-      this.currentStep = index;
-    }
-  }
-}
 </script>
 
+<template>
+  <div class="grid">
+    <div class="col-12 md:col-12 mt-5">
+        <div class="formgrid grid">
+          <div class="field col-4">
+            <label for="name2">Title: </label>
+            <Dropdown v-model="title" :options="titleValues" optionLabel="name" placeholder="Select" style="width:100%;height:45px;" />
+          </div>
+          <div class="field col-4">
+            <label for="Forename">Forename</label>
+            <InputText id="Forename" type="text" />
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field col-4">
+            <label for="Surname">Surname</label>
+            <InputText id="Surname" type="email" />
+          </div>
+          <div class="field col-4">
+            <label for="Gender">Gender</label>
+            <Dropdown v-model="title" :options="titleValues" optionLabel="gender" placeholder="Select Gender" style="width:100%;height:45px;" />
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field col-4 form-group">
+            <p class="">Date of Birth*</p>
+            <Calendar :showIcon="true" :showButtonBar="true"></Calendar>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col-12 md:col-12">
+      <div class="formgrid grid">
+        <div class="field col-4">
+          <label for="WorkEmail">Work Email</label>
+          <InputText id="WorkEmail" type="email" />
+        </div>
+        <div class="field col-4">
+          <label for="phone">Telephone (Optional)</label>
+          <InputText id="phone" type="number" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col-12 md:col-12">
+      <div class="formgrid grid">
+        <div class="field col-4">
+          <label for="NI_Category">NI Category</label>
+          <InputText id="NI_Category" type="email" />
+        </div>
+        <div class="field col-4">
+          <label for="NI_Category">National Insurance Number (Optional)</label>
+          <InputText id="NI_Number" type="email" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <h5>Address Information</h5>
+  <div class="grid">
+    <div class="col-12 md:col-12 mt-2">
+      <div class="formgrid grid">
+        <div class="field col-4 form-group">
+          <label for="name2">Postcode* </label>
+          <InputText id="name2" type="text" />
+        </div>
+        <div class="field col-4">
+          <label for="WorkEmail">Address Line 1*</label>
+          <InputText id="WorkEmail" type="email" />
+        </div>
+        
+      </div>
+      <div class="formgrid grid">
+        <div class="field col-4">
+          <label for="phone">Address Line 2 (Optional)</label>
+          <InputText id="phone" type="number" />
+        </div>
+        <div class="field col-4">
+          <label for="NI_Category">City*</label>
+          <InputText id="NI_Category" type="email" />
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field col-4 form-group">
+          <div for="country">Country* </div>
+          <InputText id="country" type="text" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped>
+.p-calendar{
+  width: 100%;
+}
 ::v-deep input{
     width:100%;
     height:45px !important;
@@ -238,6 +275,4 @@ export default {
     }
 }
 
-/*# sourceMappingURL=main.css.map*/
 </style>
-
