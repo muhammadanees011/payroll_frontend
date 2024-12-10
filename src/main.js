@@ -115,6 +115,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { showConfirmation } from './helpers/confirmationHelper';
 import { showToast } from './helpers/showToastHelper';
+import encryptionHelper from './helpers/encryptionHelper';
 
 const app = createApp(App);
 
@@ -129,6 +130,7 @@ app.config.globalProperties.$moment = moment;
 app.use(VueSweetalert2);
 app.config.globalProperties.$showConfirmation = showConfirmation;
 app.config.globalProperties.$showToast = showToast;
+app.config.globalProperties.$encryptionHelper = encryptionHelper;
 
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);

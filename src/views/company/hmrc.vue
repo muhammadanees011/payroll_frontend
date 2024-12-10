@@ -40,7 +40,7 @@
                         <Button @click="saveDetails()" label="Test Connection" class="ml-2"></Button>
                         <span>
                             <Button @click="isEdit=false" label="Cancel" class="ml-2"></Button>
-                            <Button @click="saveDetails()" label="Save" class="ml-2"></Button>
+                            <Button @click="saveHMRCSettings()" label="Save" class="ml-2"></Button>
                         </span>
                     </div>
 
@@ -51,43 +51,43 @@
                 <div class="flex flex-column align-items-center justify-content-center">
                     <div class="w-full surface-card py-8 px-5 sm:px-8 flex flex-column align-items-center" style="border-radius: 53px">
                         <div class="mt-4 w-full flex justify-content-between py-3 border-300 border-top-1 border-left-1 border-right-1">
-                            <span class="ml-4 mt-3 flex flex-column">
+                            <span class="ml-2 mt-3 flex flex-column">
                                 <h5 style="color:#1F9A72;" class="lg:text-sm font-medium mb-0 block">Connected</h5>
                             </span>
-                            <span class="mt-2 mr-5 edit-btn" style="height: 2rem; width: 2rem">
-                                <h3 @click="isEdit=true" class=" lg:text-xl font-medium mb-0">Edit</h3>
+                            <span @click="isEdit=true" class="mt-2 mr-2 edit-btn">
+                                <h3 class=" lg:text-xl font-medium mb-0">Edit</h3>
                             </span>
                         </div>
                         <div class="w-full flex justify-content-between py-3 border-300 border-top-1 border-left-1 border-right-1">
-                            <span class="ml-4 mt-3 flex flex-column">
+                            <span class="ml-2 mt-3 flex flex-column">
                                 <h5 class="text-900 lg:text-lg font-medium mb-0 block">PAYE reference</h5>
                             </span>
-                            <span class="mt-3 mr-5" style="height: 2rem; width: 7.5rem">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">120/MB23649</h3>
+                            <span class="mt-3">
+                                <h3 class="mr-2 text-900 lg:text-sm font-medium mb-0 block">{{ details.paye_reference || 'N/A' }}</h3>
                             </span>
                         </div>
                         <div class="w-full flex justify-content-between py-3 border-300 border-top-1 border-left-1 border-right-1">
-                            <span class="ml-4 mt-3 flex flex-column">
+                            <span class="ml-2 mt-3 flex flex-column">
                                 <h5 class="text-900 lg:text-lg font-medium mb-0 block">Accounts office reference</h5>
                             </span>
-                            <span class="mt-3 mr-5" style="height: 2rem; width: 9rem">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">210PA04693513</h3>
+                            <span class="mt-3">
+                                <h3 class="mr-2 text-900 lg:text-sm font-medium mb-0 block">{{ details.account_office_reference || 'N/A'}}</h3>
                             </span>
                         </div>
                         <div class="w-full flex justify-content-between py-3 border-300 border-top-1 border-left-1 border-right-1">
-                            <span class="ml-4 mt-3 flex flex-column">
+                            <span class="ml-2 mt-3 flex flex-column">
                                 <h3 class="text-900 lg:text-xl font-medium mb-0 block">HMRC Gateway User ID</h3>
                             </span>
-                            <span class="mt-3 mr-5" style="height: 2rem; width: 8.5rem">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">317636695836</h3>
+                            <span class="mt-3">
+                                <h5 class="mr-2 text-900 lg:text-sm font-medium mb-0 block">{{ details.hmrc_gateway_id || 'N/A'}}</h5>
                             </span>
                         </div>
                         <div class="w-full flex justify-content-between py-3 border-300 border-bottom-1 border-top-1 border-left-1 border-right-1">
-                            <span class="ml-4 mt-3 flex flex-column">
+                            <span class="ml-2 mt-3 flex flex-column">
                                 <h3 class="text-900 lg:text-xl font-medium mb-0 block">HMRC Gateway Password</h3>
                             </span>
-                            <span class="mt-3 mr-5" style="height: 2rem; width: 4rem">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">xxxxxx</h3>
+                            <span class="mt-3">
+                                <h5 class="mr-2 text-900 lg:text-sm font-medium mb-0 block">xxxxxx</h5>
                             </span>
                         </div>
                     </div>
@@ -133,18 +133,53 @@ export default {
             account_office_reference:'',
             paye_reference:'',
             taxpayer_reference:'',
-            employment_allowance:'',
-            business_sector:'',
+            employment_allowance:[],
+            business_sector:[],
             hmrc_gateway_id:'',
             hmrc_password:'',
         },
     };
   },
+  mounted(){
+    this.getHMRCSettings()
+  },
   methods: {
-    addPayItems(){
-      this.$router.push({ name: 'company-create-payitems' });
 
-    }
+    async saveHMRCSettings(){
+        let data= this.details
+        const apiUrl = `/updateHMRCSettings`;
+        try {
+        let response=await this.$axios.post(apiUrl,data);
+        this.getHMRCSettings()
+        this.$showToast('success','HMRC settings updated successfully.');
+        } catch (error) {
+        let errors=error.response.data.errors
+        }
+    },
+
+
+    async getHMRCSettings(){
+        const apiUrl = `/getHMRCSettings`;
+        try {
+        let response=await this.$axios.get(apiUrl);
+        response=response.data
+        this.setupData(response)
+        } catch (error) {
+        let errors=error.response.data.errors
+        }
+    },
+
+    setupData(data){
+        this.details.account_office_reference=data.account_office_reference
+        this.details.paye_reference=data.paye_reference
+        this.details.taxpayer_reference=data.taxpayer_reference
+        this.details.employment_allowance=[]
+        this.details.business_sector=[]
+        this.details.hmrc_gateway_id=data.hmrc_gateway_id
+        // this.details.hmrc_password=data.hmrc_password
+    },
+  
+
   }
 }
 </script>

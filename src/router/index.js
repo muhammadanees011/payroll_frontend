@@ -115,6 +115,28 @@ const router = createRouter({
                             component: () => import('@/views/payroll/active.vue'),
                         },
                         {
+                            path: '/run-payroll/:id',
+                            name: 'RunPayroll',
+                            component: () => import('@/views/payroll/payrun/payrun.vue'),
+                            children: [
+                                {
+                                    path: '/salaried-employees/:payschedule_id/:payroll_id',
+                                    name: 'SalariedEmployees',
+                                    component: () => import('@/views/payroll/payrun/SalariedEmployees.vue'),
+                                },
+                                {
+                                    path: '/input-hours/:payschedule_id/:payroll_id',
+                                    name: 'InputHours',
+                                    component: () => import('@/views/payroll/payrun/InputHours.vue'),
+                                },
+                                {
+                                    path: '/hourly-employees/:payschedule_id/:payroll_id',
+                                    name: 'HourlyEmployees',
+                                    component: () => import('@/views/payroll/payrun/HourlyEmployees.vue'),
+                                },
+                            ]
+                        },
+                        {
                             path: '/payroll-history',
                             name: 'payroll-history',
                             component: () => import('@/views/payroll/history.vue'),
@@ -128,13 +150,70 @@ const router = createRouter({
                 },
                 {
                     path: '/employees',
-                    name: 'notfound',
+                    name: 'employees',
                     component: () => import('@/views/employees/index.vue')
                 },
                 {
-                    path: '/employees/add',
+                    path: '/employees/add/:employee_id?/:step?',
                     name: 'AddEmployee',
                     component: () => import('@/views/employees/add/index.vue')
+                },
+                {
+                    path: '/employees/record/:id',
+                    name: 'EmployeeRecord',
+                    component: () => import('@/views/employees/edit/index.vue'),
+                    children: [
+                        {
+                            path: '/employees/general/:id',
+                            name: 'General',
+                            component: () => import('@/views/employees/edit/general.vue'),
+                        },
+                        {
+                            path: '/employees/salary/:id',
+                            name: 'Salary',
+                            component: () => import('@/views/employees/edit/salary.vue'),
+                        },
+                        {
+                            path: '/employees/taxes/:id',
+                            name: 'Taxes',
+                            component: () => import('@/views/employees/edit/taxes.vue'),
+                        },
+                        {
+                            path: '/employees/pension/:id',
+                            name: 'Pension',
+                            component: () => import('@/views/employees/edit/pension.vue'),
+                        },
+                        {
+                            path: '/employees/payslips/:id',
+                            name: 'Payslips',
+                            component: () => import('@/views/employees/edit/general.vue'),
+                        },
+                        {
+                            path: '/employees/paternity-leaves/:id',
+                            name: 'PaternityLeaves',
+                            component: () => import('@/views/employees/edit/paternity.vue'),
+                        },
+                        {
+                            path: '/employees/year-to-dates/:id',
+                            name: 'YearToDates',
+                            component: () => import('@/views/employees/edit/YTD.vue'),
+                        },
+                        {
+                            path: '/employees/sick-leave/:id',
+                            name: 'SickLeave',
+                            component: () => import('@/views/employees/edit/SickLeave.vue'),
+                        },
+                        {
+                            path: '/employees/bank-details/:id',
+                            name: 'BankDetails',
+                            component: () => import('@/views/employees/edit/BankDetails.vue'),
+                        },
+                        {
+                            path: '/employees/student-loans/:id',
+                            name: 'StudentLoans',
+                            component: () => import('@/views/employees/edit/StudentLoans.vue'),
+                        },
+                    ]
                 },
             ]
         },

@@ -1,46 +1,45 @@
-<script setup>
-import { ref } from "vue";
-
-const titleValues = ref([
-  { name: 'Mr', code: 'Mr' },
-  { name: 'Mrs', code: 'Mrs' },
-]);
-const genderValues = ref([
-  { name: 'Male', code: 'male'},
-  { name: 'Female',code: 'female'},
-]);
-const title = ref(null);
-const gender = ref(null);
-
-</script>
-
 <template>
   <div class="grid">
     <div class="col-12 md:col-12 mt-5">
         <div class="formgrid grid">
           <div class="field col-4">
-            <label for="name2">Title: </label>
-            <Dropdown v-model="title" :options="titleValues" optionLabel="name" placeholder="Select" style="width:100%;height:45px;" />
+            <label for="name">Title* </label>
+            <Dropdown v-model="details.title" :options="titleValues" optionLabel="name" placeholder="Select" style="width:100%;height:45px;" />
+            <span v-if="validationErrors.title" class="font-medium validation-text p-2">
+              {{validationErrors.title}}
+            </span>
           </div>
           <div class="field col-4">
-            <label for="Forename">Forename</label>
-            <InputText id="Forename" type="text" />
+            <label for="Forename">Forename*</label>
+            <InputText v-model="details.forename" id="Forename" type="text" />
+            <span v-if="validationErrors.forename" class="font-medium validation-text p-2">
+              {{validationErrors.forename}}
+            </span>
           </div>
         </div>
         <div class="formgrid grid">
           <div class="field col-4">
-            <label for="Surname">Surname</label>
-            <InputText id="Surname" type="email" />
+            <label for="Surname">Surname*</label>
+            <InputText v-model="details.surname" id="Surname" type="text" />
+            <span v-if="validationErrors.surname" class="font-medium validation-text p-2">
+              {{validationErrors.surname}}
+            </span>
           </div>
           <div class="field col-4">
-            <label for="Gender">Gender</label>
-            <Dropdown v-model="title" :options="titleValues" optionLabel="gender" placeholder="Select Gender" style="width:100%;height:45px;" />
+            <label for="gender">Gender*</label>
+            <Dropdown v-model="details.gender" :options="genderValues" optionLabel="name" placeholder="Select" style="width:100%;height:45px;" />
+            <span v-if="validationErrors.gender" class="font-medium validation-text p-2">
+              {{validationErrors.gender}}
+            </span>
           </div>
         </div>
         <div class="formgrid grid">
           <div class="field col-4 form-group">
             <p class="">Date of Birth*</p>
-            <Calendar :showIcon="true" :showButtonBar="true"></Calendar>
+            <Calendar v-model="details.dob" :showIcon="true" :showButtonBar="true"></Calendar>
+            <span v-if="validationErrors.dob" class="font-medium validation-text p-2">
+              {{validationErrors.dob}}
+            </span>
           </div>
         </div>
     </div>
@@ -49,12 +48,18 @@ const gender = ref(null);
     <div class="col-12 md:col-12">
       <div class="formgrid grid">
         <div class="field col-4">
-          <label for="WorkEmail">Work Email</label>
-          <InputText id="WorkEmail" type="email" />
+          <label for="WorkEmail">Work Email*</label>
+          <InputText v-model="details.work_email"  id="WorkEmail" type="email" />
+          <span v-if="validationErrors.work_email" class="font-medium validation-text p-2">
+              {{validationErrors.work_email}}
+            </span>
         </div>
         <div class="field col-4">
           <label for="phone">Telephone (Optional)</label>
-          <InputText id="phone" type="number" />
+          <InputText v-model="details.telephone" id="phone" type="number" />
+          <span v-if="validationErrors.telephone" class="font-medium validation-text p-2">
+              {{validationErrors.telephone}}
+            </span>
         </div>
       </div>
     </div>
@@ -63,12 +68,18 @@ const gender = ref(null);
     <div class="col-12 md:col-12">
       <div class="formgrid grid">
         <div class="field col-4">
-          <label for="NI_Category">NI Category</label>
-          <InputText id="NI_Category" type="email" />
+          <label for="NI_Category">NI Category*</label>
+          <Dropdown v-model="details.ni_category" :options="NICategories" optionLabel="name" placeholder="Select" style="width:100%;height:45px;"  />
+          <span v-if="validationErrors.ni_category" class="font-medium validation-text p-2">
+              {{validationErrors.ni_category}}
+            </span>
         </div>
         <div class="field col-4">
-          <label for="NI_Category">National Insurance Number (Optional)</label>
-          <InputText id="NI_Number" type="email" />
+          <label for="NI_Number">National Insurance Number (Optional)</label>
+          <InputText v-model="details.nino" id="NI_Number" type="text" />
+          <span v-if="validationErrors.nino" class="font-medium validation-text p-2">
+              {{validationErrors.nino}}
+            </span>
         </div>
       </div>
     </div>
@@ -78,34 +89,122 @@ const gender = ref(null);
     <div class="col-12 md:col-12 mt-2">
       <div class="formgrid grid">
         <div class="field col-4 form-group">
-          <label for="name2">Postcode* </label>
-          <InputText id="name2" type="text" />
+          <label for="postcode">Postcode* </label>
+          <InputText v-model="details.postcode" id="postcode" type="text" />
+          <span v-if="validationErrors.postcode" class="font-medium validation-text p-2">
+              {{validationErrors.postcode}}
+            </span>
         </div>
         <div class="field col-4">
-          <label for="WorkEmail">Address Line 1*</label>
-          <InputText id="WorkEmail" type="email" />
+          <label for="address1">Address Line 1*</label>
+          <InputText v-model="details.address_line1" id="address1" type="text" />
+          <span v-if="validationErrors.address_line1" class="font-medium validation-text p-2">
+              {{validationErrors.address_line1}}
+            </span>
         </div>
         
       </div>
       <div class="formgrid grid">
         <div class="field col-4">
-          <label for="phone">Address Line 2 (Optional)</label>
-          <InputText id="phone" type="number" />
+          <label for="address2">Address Line 2 (Optional)</label>
+          <InputText v-model="details.address_line2" id="address2" type="text" />
+          <span v-if="validationErrors.address_line2" class="font-medium validation-text p-2">
+              {{validationErrors.address_line2}}
+            </span>
         </div>
         <div class="field col-4">
-          <label for="NI_Category">City*</label>
-          <InputText id="NI_Category" type="email" />
+          <label for="city">City*</label>
+          <InputText v-model="details.city" id="city" type="text" />
+          <span v-if="validationErrors.city" class="font-medium validation-text p-2">
+              {{validationErrors.city}}
+            </span>
         </div>
       </div>
       <div class="formgrid grid">
         <div class="field col-4 form-group">
           <div for="country">Country* </div>
-          <InputText id="country" type="text" />
+          <InputText v-model="details.country" id="country" type="text" />
+          <span v-if="validationErrors.country" class="font-medium validation-text p-2">
+              {{validationErrors.country}}
+            </span>
         </div>
       </div>
+      <br>
+      <!-- <Button label="Save And Finish Later" severity="secondary" class="mt-5 ml-2"></Button> -->
+      <Button @click="saveDetails()" label="Continue" class="ml-2 mt-3"></Button>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      titleValues: [
+        { name: 'Mr', code: 'Mr' },
+        { name: 'Mrs', code: 'Mrs' },
+        { name: 'Miss', code: 'Miss' },
+        { name: 'Ms', code: 'Ms' },
+      ],
+      genderValues: [
+        { name: 'Male', code: 'Male' },
+        { name: 'Female', code: 'Female' },
+      ],
+      NICategories: [
+        { name: 'A - All Employees Apart from those in groups B,C,H,J,M and Z in this table', code: 'A' },
+        { name: 'B - Married women and widows entitled to pay reduced National insurance', code: 'B' },
+        { name: 'C - Employees over the state pension age', code: 'C' },
+        { name: 'D - Deferred rate contributions for employees in an investment zone special tax site', code: 'D' },
+        { name: 'E - Married women reduced rate contribution for employees in an investment zone special tax site', code: 'E' },
+        { name: 'F - All employees who work in freeports, apart from those in groups I, L, and S in this table', code: 'F' },
+        { name: 'H - Apprentices under 25', code: 'H' },
+        { name: 'I - Married women and widows who work in freeports and are entitled to pay reduced National Insurance', code: 'I' },
+        { name: 'J - Employees who can defer National Insurance because they’re already paying it in another job', code: 'J' },
+        { name: 'K - Employees who work in investment zones and are over State Pension age', code: 'K' },
+        { name: 'L - Employees who work in freeports and can defer National Insurance because they’re already paying it in another job', code: 'L' },
+        { name: 'M - Employees under 21', code: 'M' },
+        { name: 'N - All employees who work in investment zones, apart from those in groups E, D and K in this table', code: 'N' },
+        { name: 'S - Employees who work in freeports and are over the State Pension age', code: 'S' },
+        { name: 'V - Employees who are working in their first job since leaving the armed forces', code: 'V' },
+        { name: 'X - Employers use category letter X for employees who do not have to pay National Insurance, for example because they’re under 16.', code: 'X' },
+        { name: 'Z - Employees under 21 who can defer National Insurance because they’re already paying it in another job', code: 'Z' },
+      ],
+      validationErrors:[],
+      details:{
+        title:'',
+        forename:'',
+        surname:'',
+        gender:'',
+        dob:'',
+        work_email:'',
+        telephone:'',
+        ni_category:'',
+        nino:'',
+        postcode:'',
+        address_line1:'',
+        address_line2:'',
+        city:'',
+        country:''
+      },
+    };
+  },
+
+  methods: {
+    saveDetails(){
+      const optionalFields = ['telephone','nino','address_line2'];
+      this.validationErrors = this.$validateFormData(this.details, optionalFields);
+      if (Object.keys(this.validationErrors).length === 0 ) {
+          this.details.dob=this.$moment(this.details.dob).format('YYYY-MM-DD');
+          this.$emit('saveDetails', this.details);
+      } else {
+          // console.log('Validation errors:', this.validationErrors);
+      }
+    },
+  },
+  
+};
+</script>
+
 
 <style scoped>
 .p-calendar{

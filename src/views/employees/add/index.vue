@@ -20,9 +20,9 @@
                 <personal-details v-if="currentStep==0" @saveDetails="saveDetails"/>
                 <employment-details v-if="currentStep==1" @saveDetails="saveDetails"/>
                 <starter-details v-if="currentStep==2" @saveDetails="saveDetails"/>
-                <br>
+                <!-- <br>
                 <Button label="Save And Finish Later" severity="secondary" class="mb-2 mr-2"></Button>
-                <Button @click="nextStep()" label="Continue" class="ml-2 mb-2"></Button>
+                <Button @click="nextStep()" label="Continue" class="ml-2 mb-2"></Button> -->
             </div>
         </div>
 
@@ -53,7 +53,8 @@ export default {
         { label: 'Employment Details', component: 'EmploymentDetails' },
         { label: 'Complete', component: 'CompletionDetails' },
       ],
-      currentStep: 0  // Starting with the first step
+      currentStep: 0,  // Starting with the first step
+      employee_id:null,
     }
   },
   computed: {
@@ -61,14 +62,47 @@ export default {
       return this.mySteps[this.currentStep].component;
     }
   },
+  mounted(){
+    this.decryptParams()
+  },
   methods: {
     nextStep(){
         this.currentStep = this.currentStep+1;  
     },
+
     setActiveStep(index) {
       console.log("Step clicked:", index);
       this.currentStep = index;
-    }
+    },
+
+    //-----------DECRYPT PARAMS----------
+    decryptParams(){
+      let employee_id=this.$route.params.employee_id ? this.$route.params.employee_id : null
+      let step=this.$route.params.step ? this.$route.params.step : null
+      if(employee_id && step){
+        this.employee_id = this.$encryptionHelper.decrypt(employee_id);
+        this.currentStep = this.$encryptionHelper.decrypt(step);
+      }
+    },
+
+    //-----------SAVE EMPLOYEE DETAILS----------
+    async saveDetails(data){
+      let employee_id=this.employee_id
+      const apiUrl = `/create-employee/`+employee_id;
+      try {
+      let response=await this.$axios.post(apiUrl,data);
+      this.employee_id=response.data.employee_id
+      this.currentStep= this.currentStep + 1;
+      if(response.data.step==3){
+        this.$showToast('success','Employee created successfully.');
+        this.$router.push({ name: 'employees' });
+      }
+      } catch (error) {
+      let errors=error.response.data.errors
+      console.log('errors',errors)
+      }
+    },
+
   }
 }
 </script>

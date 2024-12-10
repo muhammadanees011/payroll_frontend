@@ -16,11 +16,18 @@
                   </div>
   
                   <div class="formgrid grid">
-                    <div class="field col-4">
+                    <!-- <div class="field col-4">
                         <label for="name2">Salary Type*</label>
                         <Dropdown v-model="salary.type" :options="dropdownValues" optionLabel="name" placeholder="Select" style="width:100%;height:45px" />
                         <span v-if="validationErrors.type" class="font-medium validation-text p-2">
                             {{validationErrors.type}}
+                        </span>
+                    </div> -->
+                    <div class="field col-4">
+                        <label for="companyName">Rate Name</label>
+                        <InputText v-model="salary.description" id="companyName" optionLabel="companyName" type="text" style="width:100%;height:45px" />
+                        <span v-if="validationErrors.description" class="font-medium validation-text p-2">
+                            {{validationErrors.description}}
                         </span>
                     </div>
                     <div class="field col-4">
@@ -33,7 +40,7 @@
                 </div>
               </div>
           </div>
-          <div class="grid">
+          <!-- <div class="grid">
               <div class="col-12 md:col-12">
               <div class="formgrid grid">
                 <div class="field col-4">
@@ -45,9 +52,9 @@
                 </div>
               </div>
               </div>
-          </div>
+          </div> -->
 
-        <template v-if="salary.type.name=='Salary'">
+        <!-- <template v-if="salary.type.name=='Salary'"> -->
 
           <div class="grid">
               <div class="col-12 md:col-12">
@@ -70,8 +77,8 @@
               </div>
           </div>
 
-        </template>
-
+        <!-- </template> -->
+<!-- 
         <template v-if="salary.type.name=='Overtime'">
 
             <div class="grid">
@@ -88,7 +95,7 @@
                 </div>
             </div>
 
-        </template>
+        </template> -->
 
   
           <div class="grid">
@@ -117,8 +124,6 @@
         isErrors:false,
   
         salary:{
-          type:'',
-          multiply_by:'',
           code:'',
           pensionable:'',
           salary_period:'',
@@ -141,10 +146,8 @@
     methods: {
       validateData(){
         let optionalFields = [];
-        if(this.salary.type.name=='Salary'){
-            optionalFields = ['multiply_by','pensionable'];
-        }else if(this.salary.type.name=='Overtime'){
-            optionalFields = ['salary_rate','salary_period','pensionable'];
+        if(this.salary.pensionable==''){
+          this.salary.pensionable=['non-pensionable']
         }
         this.validationErrors = this.$validateFormData(this.salary, optionalFields);
         if (Object.keys(this.validationErrors).length === 0 ) {

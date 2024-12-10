@@ -1,9 +1,9 @@
 <template>
     <div class="col-12 md:col-12">
         <div class="card card-w-title">
-            <h5>Muhammad Anees <Tag>Active</Tag>
+            <h5>Pay Date: 02/12/2024 <Tag>Active</Tag>
             </h5>
-            <p>View and manage detailed employee information, including personal details, salary, tax records, and leave history.</p>
+            <p>Tax Period: 35</p>
             <TabMenu :model="nestedRouteItems" @click="tabHandler" />
             <router-view />
         </div>
@@ -17,43 +17,19 @@ export default {
         recordID:null,
         nestedRouteItems: [
             {
-            label: 'General',
+            label: 'Salaried Employees',
             to: ''
             },
             {
-            label: 'Salary',
+            label: 'Input Hours',
             to: ''
             },
             {
-            label: 'Taxes',
+            label: 'Hourly Employees',
             to: ''
             },
             {
-            label: 'Pension',
-            to: ''
-            },
-            {
-            label: 'Payslips',
-            to: ''
-            },
-            {
-            label: 'Paternity Leaves',
-            to: ''
-            },
-            {
-            label: 'Year To Dates',
-            to: ''
-            },
-            {
-            label: 'Sick Leave',
-            to: ''
-            },
-            {
-            label: 'Bank Details',
-            to: ''
-            },
-            {
-            label: 'Student Loans',
+            label: 'Review Payroll',
             to: ''
             }
         ]
