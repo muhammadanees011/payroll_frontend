@@ -21,11 +21,11 @@
                 <template #header>
                     <div class="flex justify-content-between flex-column sm:flex-row">
                       <div>
-                        <Button type="button" icon="pi pi-upload" label="Import" outlined />
+                        <!-- <Button type="button" icon="pi pi-upload" label="Import" outlined /> -->
                       </div>
                       <span class="flex justify-content-between flex-column sm:flex-row">
                         <Button label="Save Hours" @click="SaveInputHours()" class="ml-2 mr-2" />
-                        <Button type="button" icon="pi pi-arrow-right" label="Next" outlined />
+                        <Button @click="redirectToNext()" type="button" icon="pi pi-arrow-right" label="Next" outlined />
                       </span>
                     </div>
                 </template>
@@ -87,6 +87,10 @@
 
       },
       methods: {
+
+        redirectToNext(){
+          this.$router.push({ name: 'HourlyEmployees' });
+        },
     
         getSeverity(status) {
           switch (status) {
@@ -118,7 +122,9 @@
           const apiUrl = `/updateInputHours/`;
           try {
             let response=await this.$axios.post(apiUrl,data);
+            this.$showToast('success','Hours updated successfully.');
           } catch (error) {
+            this.$showToast('error','Something went wrong.');
             let errors=error.response.data.errors
             console.log('errors',errors)
           }

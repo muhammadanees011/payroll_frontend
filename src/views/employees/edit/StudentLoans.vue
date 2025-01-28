@@ -94,6 +94,7 @@
       saveData(){
         this.plansData = Object.keys(this.studentPlans).map(key => ({
             plan_id: parseInt(key), 
+            type: this.plans.find(item => item.id == key)?.type || null,
             status: this.studentPlans[key]
         }));
 

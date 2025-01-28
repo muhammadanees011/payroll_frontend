@@ -21,12 +21,12 @@
               >
                 <template #header>
                     <div class="flex justify-content-between flex-column sm:flex-row">
-                      <div>
-                        <!-- <Button type="button" icon="pi pi-upload" label="Import" outlined /> -->
+                      <!-- <div>
+                        <Button type="button" icon="pi pi-upload" label="Import" outlined />
                       </div>
                       <span class="flex justify-content-between flex-column sm:flex-row">
                         <Button @click="redirectToNext()" type="button" icon="pi pi-arrow-right" label="Next" outlined />
-                      </span>
+                      </span> -->
                     </div>
                 </template>
                 <template #empty  v-if="!loading1"> No records found. </template>
@@ -62,7 +62,6 @@
       </div>
 
       <div class="field">
-        <h5 @click="openPayItem()" class="text-primary addpayitembtn">+Add pay item</h5>
         <div class="flex justify-content-between ">
           <p>Base Pay</p>
           <p>{{ formatCurrency(employeePaySummary.base_pay) }}</p>
@@ -85,8 +84,8 @@
         </div>
         <template v-for="(item, index) in employeePaySummary.payitems">
           <div class="flex justify-content-between ">
-            <p @click="openEditPayItem(item)" v-if="item.type=='Salary'" class="text-primary editpayitembtn">{{ item.salarytype.description }}</p>
-            <p @click="openEditPayItem(item)" v-if="item.type=='PayItem'" class="text-primary editpayitembtn">{{ item.payitem.name }}</p>
+            <p v-if="item.type=='Salary'" class="text-primary">{{ item.salarytype.description }}</p>
+            <p v-if="item.type=='PayItem'" class="text-primary">{{ item.payitem.name }}</p>
             <p>{{ formatCurrency(item.amount) }}</p>
           </div>
         </template>
@@ -356,7 +355,7 @@
           const apiUrl = `/salariedEmployees`;
           let data={
             'payschedule_id':pay_schedule_id,
-            'payroll_status':'active'
+            'payroll_status':'history'
           }
           try {
           let response=await this.$axios.post(apiUrl,data);
@@ -431,40 +430,6 @@
             });
           }
         },
- 
-        //-----------Open Edit PayItem Dialog-----------
-        async openEditPayItem(data){
-          this.editPayItemDialog=true
-          this.paySummaryDialog=false
-          await this.getPayItems();
-          console.log('data',data)
-          if(data.type=='Salary'){
-            this.payItems.filter((item)=>{
-              if(item.type=='salary' && item.code==data.salary_type_id){
-                this.newPayItem.id=data.id;
-                this.newPayItem.item_id=data.salary_type_id;
-                this.newPayItem.amount=data.amount;
-                this.newPayItem.name=item;
-                this.newPayItem.salary_rate=data.salary_rate;
-                this.newPayItem.type='salary';
-                this.newPayItem.hours=data.hours;
-                this.newPayItem.units=data.units;
-              }
-            })
-          }else if(data.type=='PayItem'){
-            this.payItems.filter((item)=>{
-              if(item.type=='payitem' && item.code==data.pay_item_id){
-                this.newPayItem.id=data.id;
-                this.newPayItem.item_id=data.pay_item_id;
-                this.newPayItem.name=item;
-                this.newPayItem.amount=data.amount;
-                this.newPayItem.type='payitem';
-              }
-            })
-          }
-
-          console.log('data set', this.newPayItem)
-        },
 
         //-----------Update Pay Item-----------
         async updatePayItem(){
@@ -524,13 +489,6 @@
           }
         },
 
-        //-----------Open PayItem Dialog-----------
-        openPayItem(){
-          this.payItemDialog=true
-          this.paySummaryDialog=false
-          this.getPayItems();
-        },
-
         //-----------Check PayItems Type-----------
         checkPayItemType(name){
           if(name.type=='payitem'){
@@ -561,17 +519,6 @@
           this.payItemDialog=false
           this.$showToast('success','Employee pay Item Added successfully.');
           this.getSalariedEmployees()
-          } catch (error) {
-          let errors=error.response.data.errors
-          }
-        },
-
-        //-----------Get Pay Items-----------
-        async getPayItems(){
-          const apiUrl = `/getPayItemsDropDown`;
-          try {
-          let response=await this.$axios.get(apiUrl);
-          this.payItems=response.data
           } catch (error) {
           let errors=error.response.data.errors
           }

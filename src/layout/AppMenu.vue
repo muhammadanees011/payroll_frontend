@@ -107,6 +107,11 @@ const model = ref([
         icon: 'pi pi-fw pi-file',
         to: '/company-reports',
       },
+      {
+        label: 'Settings-',
+        icon: 'pi pi-fw pi-cog',
+        to: '/company-reports',
+      },
         // {
         //   label: 'Crud',
         //   icon: 'pi pi-fw pi-pencil',

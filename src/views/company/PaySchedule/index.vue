@@ -26,11 +26,7 @@
             <Column field="id" header="Id" :sortable="true" />
             <Column field="name" header="Name" :sortable="true" />
             <Column field="pay_frequency" header="Frequency" :sortable="true" />
-            <Column field="amount" header="N Of Employees" :sortable="true">
-              <template #body="slotProps">
-                N/A
-              </template>
-            </Column>
+            <Column field="pay_schedule_employees_count" header="N Of Employees" :sortable="true"/>
             <Column field="status" header="Status" :sortable="true">
               <template #body="slotProps">
                 <span :class="'order-badge order-' + (slotProps.data.status ? slotProps.data.status.toLowerCase() : '')">{{ slotProps.data.status }}</span>

@@ -56,22 +56,6 @@
                     <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name" />
                 </template>
             </Column> -->
-            <Column header="Date" field="start_date" :sortable="true" filterField="start_date" dataType="date" style="min-width: 10rem">
-                <!-- <template #body="{ data }">
-                    {{ formatDate(data.start_date) }}
-                </template> -->
-                <template #filter="{ filterModel }">
-                    <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
-                </template>
-            </Column>
-            <Column header="Salary" filterField="salary" :sortable="true" dataType="numeric" style="min-width: 10rem">
-                <template #body="{ data }">
-                    {{ formatCurrency(data.salary) }}
-                </template>
-                <template #filter="{ filterModel }">
-                    <InputNumber v-model="filterModel.value" mode="currency" currency="USD" locale="en-US" />
-                </template>
-            </Column>
             <Column field="payroll_status" header="Payroll Status" :filterMenuStyle="{ width: '14rem' }" style="min-width: 8rem">
                 <template #body="{ data }">
                     <Tag v-if="data.payroll_status=='Pending Information'" @click="completeProfile(data.id,data.step)" :severity="getSeverity(data.payroll_status)" class="pending-info">{{ ('pending').toUpperCase() }}-></Tag>

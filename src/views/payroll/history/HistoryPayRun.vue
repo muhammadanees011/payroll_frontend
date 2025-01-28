@@ -1,7 +1,7 @@
 <template>
     <div class="col-12 md:col-12">
       <div class="card card-w-title">
-        <h5>Pay Date: {{ payrollDetail.pay_date }}<Tag>Active</Tag></h5>
+        <h5>Pay Date: {{ payrollDetail.pay_date }} <Tag class="ms-2">History</Tag></h5>
         <p>Tax Period: {{ payrollDetail.tax_period }}</p>
         <TabMenu :model="nestedRouteItems" @click="tabHandler" ref="tabMenu" />
         <router-view />
@@ -20,10 +20,9 @@
         payrollDetail:'',
         recordID: null,
         nestedRouteItems: [
-          { label: 'Salaried Employees', to: '/salaried-employees/:payschedule_id/:payroll_id' },
-          { label: 'Input Hours', to: '/input-hours/:payschedule_id/:payroll_id' },
-          { label: 'Hourly Employees', to: '/hourly-employees/:payschedule_id/:payroll_id' },
-          { label: 'Review Payroll', to: '/review-payroll/:payschedule_id/:payroll_id' }
+          { label: 'History Payroll Salaried Employees', to: '/history-payroll-salaried-employees/:payschedule_id/:payroll_id' },
+          { label: 'History Payroll Hourly Employees', to: '/history-payroll-hourly-employees/:payschedule_id/:payroll_id' },
+          { label: 'Review History Payroll', to: '/review-history-payroll/:payschedule_id/:payroll_id' }
         ]
       };
     },
@@ -64,11 +63,11 @@
         const clickedTabIndex = this.nestedRouteItems.findIndex(item => item.label === data.target.innerText);
 
         // Only allow navigation to the next tab (forward) and prevent navigating back
-        if (clickedTabIndex < this.activeTabIndex) {
+        // if (clickedTabIndex < this.activeTabIndex) {
             // Proceed with navigation to the next tab
             const routeName = this.removeSpaceBetweenWords(data.target.innerText);
             this.$router.push({ name: routeName, params: { id: employeeID } });
-        }
+        // }
         this.setActiveTab()
         },
 

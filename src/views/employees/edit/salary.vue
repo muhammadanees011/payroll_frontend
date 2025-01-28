@@ -77,7 +77,7 @@
                         <label for="Forename">Salary Type*</label>
                         <Dropdown v-model="details.salary_type" :options="salaryTypes" optionLabel="name" placeholder="Select" style="width:100%;height:45px;"  />
                     </div>
-                    <template v-if='details.salary_type.code=="Monthly"'>
+                    <template v-if='details.salary_type.code=="Salaried"'>
                         <div class="field">
                             <label >Annual Salary*</label>
                             <InputText class="mt-1"  v-model="details.anual_salary" type="number" style="width:100%;height:45px;" />

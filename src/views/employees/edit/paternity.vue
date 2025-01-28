@@ -110,6 +110,7 @@
   export default {
     data() {
       return {
+        due_date:'',
           isUpdating:false,
           isEdit:false,
           validationErrors:[],
@@ -136,6 +137,11 @@
         this.isUpdating=false
     },
     watch:{
+        due_date:{
+            handler(newVal,oldVal){
+                console.log(newVal)
+            }
+        },
         start_date:{
             handler(newVal,oldVal){
                 if(this.isUpdating){
@@ -239,6 +245,10 @@
         data.second_block_start_date = data.second_block_start_date ? this.$moment(data.second_block_start_date, 'DD/MM/YYYY').format('YYYY-MM-DD'): null;
         data.second_block_end_date = data.second_block_end_date ? this.$moment(data.second_block_end_date, 'DD/MM/YYYY').format('YYYY-MM-DD'):null;
 
+        if(this.details.leave_type.code!=='My employee will take 2 weeks of leave in seperate blocks'){
+            data.second_block_start_date=null;
+            data.second_block_end_date=null;
+        }
         const apiUrl = `/updatePaternityLeave/`+employee_id;
         try {
         await this.$axios.post(apiUrl,data);
@@ -252,11 +262,11 @@
     //-----------SET PATERNITY DETAIL-----------
     paternitySetup(employee_paternity){
         this.details.leave_type = {'name':employee_paternity.leave_type, 'code':employee_paternity.leave_type}
-        this.details.expected_due_date = this.$moment(employee_paternity.expected_due_date).format('DD/MM/YYYY')
-        this.details.start_date=this.$moment(employee_paternity.start_date).format('DD/MM/YYYY')
-        this.details.end_date=this.$moment(employee_paternity.end_date).format('DD/MM/YYYY')
-        this.details.second_block_start_date=employee_paternity.second_block_start_date ? this.$moment(employee_paternity.second_block_start_date).format('DD/MM/YYYY') :null
-        this.details.second_block_end_date=employee_paternity.second_block_end_date ? this.$moment(employee_paternity.second_block_end_date).format('DD/MM/YYYY') :null
+        this.details.expected_due_date = this.$moment(employee_paternity.expected_due_date).toDate();
+        this.details.start_date=this.$moment(employee_paternity.start_date).toDate()//.format('DD/MM/YYYY')
+        this.details.end_date=this.$moment(employee_paternity.end_date).toDate()//.format('DD/MM/YYYY')
+        this.details.second_block_start_date=employee_paternity.second_block_start_date ? this.$moment(employee_paternity.second_block_start_date).toDate():null//.format('DD/MM/YYYY') :null
+        this.details.second_block_end_date=employee_paternity.second_block_end_date ? this.$moment(employee_paternity.second_block_end_date).toDate():null//.format('DD/MM/YYYY') :null
         this.details.average_weekly_earnings=employee_paternity.average_weekly_earnings
     },
 

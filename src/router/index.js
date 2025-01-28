@@ -134,12 +134,39 @@ const router = createRouter({
                                     name: 'HourlyEmployees',
                                     component: () => import('@/views/payroll/payrun/HourlyEmployees.vue'),
                                 },
+                                {
+                                    path: '/review-payroll/:payschedule_id/:payroll_id',
+                                    name: 'ReviewPayroll',
+                                    component: () => import('@/views/payroll/payrun/ReviewPayroll.vue'),
+                                },
                             ]
                         },
                         {
                             path: '/payroll-history',
                             name: 'payroll-history',
                             component: () => import('@/views/payroll/history.vue'),
+                        },
+                        {
+                            path: '/payroll-history/:id',
+                            name: 'RunPayrollHistory',
+                            component: () => import('@/views/payroll/history/HistoryPayRun.vue'),
+                            children: [
+                                {
+                                    path: '/history-payroll-salaried-employees/:payschedule_id/:payroll_id',
+                                    name: 'HistoryPayrollSalariedEmployees',
+                                    component: () => import('@/views/payroll/history/SalariedEmployees.vue'),
+                                },
+                                {
+                                    path: '/history-payroll-hourly-employees/:payschedule_id/:payroll_id',
+                                    name: 'HistoryPayrollHourlyEmployees',
+                                    component: () => import('@/views/payroll/history/HourlyEmployees.vue'),
+                                },
+                                { 
+                                    path: '/review-history-payroll/:payschedule_id/:payroll_id',
+                                    name: 'ReviewHistoryPayroll',
+                                    component: () => import('@/views/payroll/history/ReviewHistoryPayroll.vue'),
+                                },
+                            ]
                         },
                         {
                             path: '/payroll-archived',
@@ -186,7 +213,7 @@ const router = createRouter({
                         {
                             path: '/employees/payslips/:id',
                             name: 'Payslips',
-                            component: () => import('@/views/employees/edit/general.vue'),
+                            component: () => import('@/views/employees/edit/payslips.vue'),
                         },
                         {
                             path: '/employees/paternity-leaves/:id',

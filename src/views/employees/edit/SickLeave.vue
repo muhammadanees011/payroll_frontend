@@ -42,25 +42,32 @@
                         <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
                     </template>
                 </Column>
-                <Column header="Deducted Day" filterField="days_unavailable" :sortable="true" dataType="numeric" style="min-width: 10rem">
+                <Column header="Deducted Days" filterField="days_unavailable" :sortable="true" dataType="numeric" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.days_unavailable }}
                     </template>
                 </Column>
-                <Column field="payroll_status" header="SSP PaybleDays" :filterMenuStyle="{ width: '14rem' }" style="min-width: 8rem">
+                <Column header="Waiting Days" filterField="statutory_waiting_days" :sortable="true" dataType="numeric" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <Tag :severity="getSeverity(data.status)">{{ data.status }}</Tag>
+                        {{ data.statutory_waiting_days }}
                     </template>
                 </Column>
-                <Column header="Status" field="status" :sortable="true" filterField="start_date" dataType="date" style="min-width: 10rem">
+                <Column field="statutory_payable_days" header="Payble Days" :filterMenuStyle="{ width: '14rem' }" style="min-width: 8rem">
+                    <template #body="{ data }">
+                        {{ data.statutory_payable_days }}
+                    </template>
+                </Column>
+                <!-- <Column header="Status" field="status" :sortable="true" filterField="start_date" dataType="date" style="min-width: 10rem">
                     <template #body="{ data }">
                         <Tag :severity="getSeverity(data.status)">{{ data.status ? data.status:'N/A' }}</Tag>
                     </template>
-                </Column>
+                </Column> -->
                 <Column header="Actions">
                   <template #body="{ data }">
-                    <Button @click="employeeRecord(data.id)" icon="pi pi-pencil" class="ml-2" />
-                    <Button @click="openConfirmation" icon="pi pi-trash" class="ml-2" />
+                    <!-- <Button @click="employeeRecord(data.id)" icon="pi pi-pencil" class="ml-2" /> -->
+                    <!-- <template  v-if="data.status=='paid'"> -->
+                      <Button @click="openConfirmation(data.id)" icon="pi pi-trash" class="ml-2" />
+                    <!-- </template> -->
                     
                     <Dialog header="Confirmation" v-model:visible="displayConfirmation" :style="{ width: '400px' }" :modal="true">
                       <div class="flex align-items-center justify-content-center">
@@ -69,7 +76,7 @@
                       </div>
                       <template #footer>
                           <Button label="No" icon="pi pi-times" @click="closeConfirmation" class="p-button-text" />
-                          <Button label="Yes" icon="pi pi-check" @click="deleteSickLeave(data.id)" class="p-button-text" autofocus />
+                          <Button label="Yes" icon="pi pi-check" @click="deleteSickLeave" class="p-button-text" autofocus />
                       </template>
                     </Dialog>
     
@@ -124,7 +131,7 @@
                 <div v-if="details.last_sick_day === 'Yes'"  class="formgrid grid">
                     <div class="field col-6 mt-4">
                         <label for="NI_Category">Last Sick day</label><br>
-                        <Calendar v-model="details.end_date" :showIcon="true" :showButtonBar="true"></Calendar>
+                        <Calendar v-model="details.end_date" @update:modelValue="validateEndDate" :showIcon="true" :showButtonBar="true"></Calendar>
                         <span v-if="validationErrors.end_date" class="font-medium validation-text p-2">
                         {{validationErrors.end_date}}
                         </span>
@@ -203,13 +210,13 @@
                 <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                     <div>
                         <span class="text-900 font-medium mr-2 mb-1 md:mb-0">Statutory Sick Pay</span>
-                        <div class="mt-1 text-600">Eligibility</div>
+                        <div class="mt-1 text-600">Qualifying Days</div>
                     </div>
                     <div class="mt-2 md:mt-0 flex align-items-center">
-                        <span class="text-500 ml-3 font-medium">Eligible</span>
+                        <span class="text-500 ml-3 font-medium">{{ working_days }}</span>
                     </div>
                 </li>
-                <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
+                <!-- <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
                     <div>
                         <div class="mt-1 text-600">Waiting days</div>
                     </div>
@@ -224,7 +231,7 @@
                     <div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
                         <span class="text-500 ml-3 font-medium">N/A</span>
                     </div>
-                </li>
+                </li> -->
                 <hr>
 
             </ul>
@@ -242,6 +249,7 @@
     export default {
       data() {
         return {
+            leaveID:'',
             isEdit:null,
             isTable:true,
             isSummary:false,
@@ -253,7 +261,8 @@
               start_date:'',
               end_date:'',
               average_weekly_earnings:'',
-              days_unavailable:''
+              days_unavailable:'',
+              qualifying_days:''
             },
           displayConfirmation:false,
           searchTerm:'',
@@ -278,19 +287,36 @@
                 const startDate = new Date(this.details.start_date);
                 const endDate = new Date(this.details.end_date);
                 const timeDifference = endDate - startDate;
-                const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+                const dayDifference = timeDifference / (1000 * 60 * 60 * 24) + 1;
                 return Math.max(0, dayDifference);
             }
             return 0;
-        }
+        },
+        working_days(){
+          if (this.details.start_date && this.details.end_date) {
+            const startDate = new Date(this.details.start_date);
+            const endDate = new Date(this.details.end_date);
+            let workingDays = 0;
+            while (startDate <= endDate) {
+              const day = startDate.getDay();
+              if (day !== 0 && day !== 6) {
+                  workingDays++;
+              }
+              startDate.setDate(startDate.getDate() + 1);
+            }
+            return workingDays;
+          }
+
+        },
       },
       methods: {
 
         continueStep(){
           this.details.days_unavailable = this.unavailable_days
+          this.details.qualifying_days = this.working_days
           this.details.employee_id = this.$route.params.id
           
-          const optionalFields = ['end_date'];
+          const optionalFields = ['end_date','qualifying_days'];
           this.validationErrors = this.$validateFormData(this.details, optionalFields);
           console.log('validationerror',this.validationErrors)
           if (Object.keys(this.validationErrors).length === 0 ) {
@@ -301,6 +327,15 @@
           } else {
           }
 
+        },
+
+        validateEndDate(value) {
+            if (this.details.start_date && value < this.details.start_date) {
+                this.details.end_date = null; // Reset end_date
+                this.validationErrors.end_date = 'End date cannot be earlier than Start date.';
+            } else {
+                this.validationErrors.end_date = ''; // Clear error if valid
+            }
         },
     
         initFilters1() {
@@ -347,11 +382,13 @@
           });
         },
         
-        openConfirmation(){
+        openConfirmation(id){
+          this.leaveID=id
           this.displayConfirmation=true
         },
         
         closeConfirmation(){
+          this.leaveID=''
           this.displayConfirmation=false 
         },
 
@@ -366,6 +403,7 @@
           this.isAdd=false
           this.isSummary=false
           this.isTable=true
+          this.getSickLeaves();
           } catch (error) {
           let errors=error.response.data.errors
           console.log('errors',errors)
@@ -384,6 +422,7 @@
           this.isEdit=null
           this.isSummary=false
           this.isTable=true
+          this.getSickLeaves();
           } catch (error) {
           let errors=error.response.data.errors
           console.log('errors',errors)
@@ -450,8 +489,8 @@
         },
     
         //-----------DELETE SICK Leave----------
-        async deleteSickLeave(id){
-          const apiUrl = `/deleteSickLeave/`+id;
+        async deleteSickLeave(){
+          const apiUrl = `/deleteSickLeave/`+this.leaveID;
           try {
           await this.$axios.get(apiUrl);
           this.displayConfirmation=false 
