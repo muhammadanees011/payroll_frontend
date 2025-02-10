@@ -191,18 +191,6 @@
                                   <h4 class="lg:text-lg">{{ reviewPayrollData.employees_count }}</h4>
                                   <span class="lg:text-sm font-medium mb-1 block">The pension contribution will be collected automatically. It will show in your account as Nuapay Re Collegia.</span>
 
-                                  <div class="field-checkbox mb-0 mt-5">
-                                    <Checkbox id="checkOption2" name="option" 
-                                    value="is_late_submission" v-model="isLateSubmission" />
-                                    <label for="checkOption2">This submission is after the pay date</label>
-                                  </div>
-
-                                  <div class="field mt-5">
-                                    <label for="name">Select late reason</label>
-                                    <Dropdown v-model="reason" :options="reasonValues" optionLabel="name" placeholder="Select an option" style="width:100%;height:45px;" />
-                                  </div>
-
-                                  <Button @click="submitPayroll()" label="SUBMIT" class="ml-2 mr-2 mt-5" />
                             </span>
                           </div>
                       </div>
@@ -214,9 +202,12 @@
   </template>
   
   <script>
+  import { useAppStore } from '@/stores/appStore';
+
   export default {
     data() {
       return {
+        appStore: useAppStore(),
         isSending:false,
         reasonValues: [
             { name: 'Employement related security', code: 'Mr' },
@@ -228,6 +219,11 @@
         isLateSubmission:'',
         reviewPayrollData:'',
       };
+    },
+    computed: {
+        currentPage() {
+        return this.appStore.currentPage;
+        }
     },
     mounted(){
         this.getReviewPayroll();
@@ -264,9 +260,10 @@
 
         //---------------GET REVIEW PAYROLL--------------   
         async getReviewPayroll(){
+            let payrollstatus=this.currentPage =='archived' ? 'archived' :'history';
             let data={
                 'payroll_id':this.$route.params.payroll_id,
-                'payroll_status':'history'
+                'payroll_status':payrollstatus
             }
             const apiUrl = '/reviewPayroll/';
             try {

@@ -202,7 +202,38 @@
                                     <Dropdown v-model="reason" :options="reasonValues" optionLabel="name" placeholder="Select an option" style="width:100%;height:45px;" />
                                   </div>
 
-                                  <Button @click="submitPayroll()" label="SUBMIT" class="ml-2 mr-2 mt-5" />
+                                  <Button v-if="isDisabled" disabled="true" label="submitting...." class="ml-2 mr-2 mt-5" />
+                                  <Button v-else @click="submitPayroll()" :disabled="isDisabled" label="SUBMIT" class="ml-2 mr-2 mt-5" />
+                                                             
+                                    <Dialog header="" v-model:visible="displayConfirmation" @update:visible="closeConfirmation"
+                                    :style="{ width: '400px' }" :modal="true">
+                                        <div class="">
+                                            <div style="display: grid; place-items: center; height: 15vh;">
+                                                <i class="pi pi-check mr-3" style="color:white; font-size: 2rem; background-color: #0D9166; border-radius: 50px; padding: 10px;" />
+                                                <span class="bold">Payroll Completed</span>
+                                            </div>
+                                            <div class="row w-full">
+                                            <!-- <ul>
+                                                <li><b>Pay Schedule: </b></li>
+                                                <li><b>Tax Period: </b></li>
+                                                <li><b>Pay Date: </b></li>
+                                            </ul> -->
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                            <span><b>We are now sending</b></span>
+                                            <ul>
+                                                <li>Your Full Payment Submission (FPS) to HMRC</li>
+                                                <li>Payslip to workers</li>
+                                            </ul>
+                                            <span>We submitt your Employer Payment Submission (EPS) to HMRC every 18th day of each month.</span>
+                                            </div>
+                                        </div>
+                                        <template #footer>
+                                            <Button label="Close" icon="pi pi-times" @click="closeConfirmation" class="p-button-text" />
+                                        </template>
+                                    </Dialog>
+
                             </span>
                           </div>
                       </div>
@@ -217,12 +248,17 @@
   export default {
     data() {
       return {
+        displayConfirmation:false,
+        isDisabled:false,
         isSending:false,
         reasonValues: [
-            { name: 'Employement related security', code: 'Mr' },
-            { name: 'National payment', code: 'Mrs' },
-            { name: 'Reasonable excuse', code: 'Miss' },
-            { name: 'Impractical to report work done on the day', code: 'Ms' },
+            { name: 'A - Payment to expat by third party or overseas employer', code: 'A' },
+            { name: 'B - Employement related security', code: 'B' },
+            { name: 'C - National payment:other', code: 'C' },
+            { name: 'D - Payment subject to class 1 NICs but P11/PD9', code: 'D' },
+            { name: 'E - National payment:other', code: 'E' },
+            { name: 'F - Impractical to report work done on the day', code: 'F' },
+            { name: 'G - Reasonable excuse', code: 'G' },
         ],
         reason:'',
         isLateSubmission:'',
@@ -236,6 +272,7 @@
 
         //---------------SUBMIT PAYROLL----------------
         async submitPayroll(){
+            this.isDisabled=true
             let data={  
                 'payroll_id':this.$route.params.payroll_id
             }
@@ -243,9 +280,17 @@
             try {
             let response=await this.$axios.post(apiUrl,data);
             await this.savePayrollEmployeesYTD();
+            await this.sendPayslipAllEmployees();
+            this.displayConfirmation=true
             } catch (error) {
+            this.isDisabled=false
             let errors=error.response.data.errors
             }
+        },
+
+        closeConfirmation(){
+            this.displayConfirmation=false 
+            this.$router.push({ name: 'payroll-active' });
         },
 
         //---------------SAVE YTD PAYROLL----------------

@@ -1,7 +1,7 @@
 <template>
     <div class="col-12 md:col-12">
       <div class="card card-w-title">
-        <h5>Pay Date: {{ payrollDetail.pay_date }} <Tag class="ms-2">History</Tag></h5>
+        <h5>Pay Date: {{ payrollDetail.pay_date }} <Tag class="ms-2">{{currentPage =='archived' ? 'Archived' :'History'}}</Tag></h5>
         <p>Tax Period: {{ payrollDetail.tax_period }}</p>
         <TabMenu :model="nestedRouteItems" @click="tabHandler" ref="tabMenu" />
         <router-view />
@@ -10,6 +10,8 @@
   </template>
   
   <script>
+  import { useAppStore } from '@/stores/appStore';
+
   export default {
     mounted() {
       this.setActiveTab();
@@ -17,16 +19,20 @@
     },
     data() {
       return {
+        appStore: useAppStore(),
         payrollDetail:'',
         recordID: null,
         nestedRouteItems: [
-          { label: 'History Payroll Salaried Employees', to: '/history-payroll-salaried-employees/:payschedule_id/:payroll_id' },
-          { label: 'History Payroll Hourly Employees', to: '/history-payroll-hourly-employees/:payschedule_id/:payroll_id' },
-          { label: 'Review History Payroll', to: '/review-history-payroll/:payschedule_id/:payroll_id' }
+          { label: 'Payroll Salaried Employees', to: '/payroll-salaried-employees/:payschedule_id/:payroll_id' },
+          { label: 'Payroll Hourly Employees', to: '/payroll-hourly-employees/:payschedule_id/:payroll_id' },
+          { label: 'Payroll Review', to: '/payroll-review/:payschedule_id/:payroll_id' }
         ]
       };
     },
     computed: {
+      currentPage() {
+        return this.appStore.currentPage;
+      },
       // Dynamically determine the active tab index based on the current route path
       activeTabIndex() {
         const currentRoutePath = this.$route.path.split('?')[0]; // Remove query params

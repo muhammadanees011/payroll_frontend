@@ -102,6 +102,11 @@ const router = createRouter({
                             name: 'company-eps',
                             component: () => import('@/views/company/reports/eps.vue')
                         },
+                        {
+                            path: '/company-p32-taxes-filings',
+                            name: 'company-p32taxes-filings',
+                            component: () => import('@/views/company/reports/p32_taxes_filings.vue')
+                        },
                     ]
 
                 },
@@ -152,18 +157,18 @@ const router = createRouter({
                             component: () => import('@/views/payroll/history/HistoryPayRun.vue'),
                             children: [
                                 {
-                                    path: '/history-payroll-salaried-employees/:payschedule_id/:payroll_id',
-                                    name: 'HistoryPayrollSalariedEmployees',
+                                    path: '/payroll-salaried-employees/:payschedule_id/:payroll_id',
+                                    name: 'PayrollSalariedEmployees',
                                     component: () => import('@/views/payroll/history/SalariedEmployees.vue'),
                                 },
                                 {
-                                    path: '/history-payroll-hourly-employees/:payschedule_id/:payroll_id',
-                                    name: 'HistoryPayrollHourlyEmployees',
+                                    path: '/payroll-hourly-employees/:payschedule_id/:payroll_id',
+                                    name: 'PayrollHourlyEmployees',
                                     component: () => import('@/views/payroll/history/HourlyEmployees.vue'),
                                 },
                                 { 
-                                    path: '/review-history-payroll/:payschedule_id/:payroll_id',
-                                    name: 'ReviewHistoryPayroll',
+                                    path: '/payroll-review/:payschedule_id/:payroll_id',
+                                    name: 'PayrollReview',
                                     component: () => import('@/views/payroll/history/ReviewHistoryPayroll.vue'),
                                 },
                             ]

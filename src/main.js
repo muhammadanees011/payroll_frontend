@@ -116,10 +116,13 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { showConfirmation } from './helpers/confirmationHelper';
 import { showToast } from './helpers/showToastHelper';
 import encryptionHelper from './helpers/encryptionHelper';
+import { createPinia } from 'pinia';
 
 const app = createApp(App);
 
 app.use(router);
+const pinia = createPinia();
+app.use(pinia);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.use(DialogService);

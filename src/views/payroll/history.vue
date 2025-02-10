@@ -54,9 +54,20 @@
           </Column>
           <Column header="Action">
             <template #body="{ data }">
-              <!-- <Button @click="payrollRun(data.pay_schedule_id,data.id)">Run Payroll</Button> -->
               <Button @click="payrollRun(data.pay_schedule_id,data.id)" icon="pi pi-eye" class="ml-2" />
-              <!-- <Button icon="pi pi-trash" class="ml-2" /> -->
+              <Button @click="openConfirmation" icon="pi pi-trash" class="ml-2" />
+                           
+                <Dialog header="Confirmation" v-model:visible="displayConfirmation" :style="{ width: '400px' }" :modal="true">
+                  <div class="flex align-items-center justify-content-center">
+                      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+                      <span>Are you sure you want to delete <b>{{ data.name }}</b>?</span>
+                  </div>
+                  <template #footer>
+                      <Button label="No" icon="pi pi-times" @click="closeConfirmation" class="p-button-text" />
+                      <Button label="Yes" icon="pi pi-check" @click="archivePayroll(data.id)" class="p-button-text" autofocus />
+                  </template>
+                </Dialog>
+
             </template>
           </Column>
         </DataTable>
@@ -68,6 +79,7 @@
 export default {
   data() {
     return {
+      displayConfirmation:false,
       payrolls:'',
     };
   },
@@ -86,6 +98,14 @@ export default {
 
     },
 
+    openConfirmation(){
+      this.displayConfirmation=true
+    },
+    
+    closeConfirmation(){
+      this.displayConfirmation=false 
+    },
+
     //---------PAYROLL RUN----------
     async payrollRun(payschedule_id,payroll_id){
       let data={
@@ -98,7 +118,21 @@ export default {
       } catch (error) {
       let errors=error.response.data.errors
       }
-      this.$router.push({ name: 'HistoryPayrollSalariedEmployees', params: { payschedule_id: payschedule_id, payroll_id:payroll_id } });
+      this.$router.push({ name: 'PayrollSalariedEmployees', params: { payschedule_id: payschedule_id, payroll_id:payroll_id } });
+    },
+
+    //---------PAYROLL RUN----------
+    async archivePayroll(payroll_id){
+      let data={
+        payroll_id:payroll_id
+      }
+      const apiUrl = `/archivePayroll`;
+      try {
+      let response=await this.$axios.post(apiUrl,data);
+      this.getPayRolls();
+      } catch (error) {
+      let errors=error.response.data.errors
+      }
     },
 
     //---------GET PAYROLL----------

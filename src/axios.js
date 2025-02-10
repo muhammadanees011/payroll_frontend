@@ -14,6 +14,10 @@ axiosClient.interceptors.request.use(
     {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (config.url.includes("download")) {
+      config.responseType = "blob";
+    }
     return config;
   },
   (error) => {

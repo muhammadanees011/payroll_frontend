@@ -30,17 +30,17 @@ export default {
                         </div>
                         <div class="w-full flex justify-content-between py-3 border-200 border-top-1 border-left-1 border-right-1">
                             <span class="ml-4 mt-3 flex flex-column">
-                                <h5 class="text-900 lg:text-lg font-medium mb-0 block">Year End Reports</h5>
+                                <h5 class=" reports-btn text-900 lg:text-lg font-medium mb-0 block">Year End Reports</h5>
                             </span>
                         </div>
                         <div class="w-full flex justify-content-between py-3 border-200 border-top-1 border-left-1 border-right-1">
                             <span class="ml-4 mt-3 flex flex-column">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">P32 Taxes and Filings</h3>
+                                <h3 @click="navigateTo('company-p32taxes-filings')" class="reports-btn text-900 lg:text-xl font-medium mb-0 block">P32 Taxes and Filings</h3>
                             </span>
                         </div>
                         <div class="w-full flex justify-content-between py-3 border-200 border-bottom-1 border-top-1 border-left-1 border-right-1">
                             <span class="ml-4 mt-3 flex flex-column">
-                                <h3 class="text-900 lg:text-xl font-medium mb-0 block">Payroll Journals</h3>
+                                <h3 class="reports-btn text-900 lg:text-xl font-medium mb-0 block">Payroll Journals</h3>
                             </span>
                         </div>
                     </div>
@@ -54,5 +54,8 @@ export default {
 <style scoped lang="scss">
 .reports-btn{
     cursor: pointer;
+}
+.reports-btn:hover{
+    text-decoration: underline;
 }
 </style> 

@@ -222,13 +222,20 @@
   <script>
     import html2pdf from "html2pdf.js";
     import Payslip from "./payslip.vue";
+    import { useAppStore } from '@/stores/appStore';
   
   export default {
     components: {
       Payslip,
     },
+    computed: {
+      currentPage() {
+        return this.appStore.currentPage;
+      }
+    },
     data() {
       return {
+        appStore: useAppStore(),
         employeePaySlip:'',
         isSending:false,
         payItems:'',
@@ -297,9 +304,6 @@
     },
     mounted(){
       this.getHourlyEmployees();
-    },
-    computed:{
-
     },
     methods: {
 
@@ -533,10 +537,11 @@
       //-----------GET DETAILS----------
       async getHourlyEmployees(){
         let pay_schedule_id = this.$route.params.payschedule_id
+        let payrollstatus=this.currentPage =='archived' ? 'archived' :'history';
         const apiUrl = `/hourlyEmployees`;
         let data={
             'payschedule_id':pay_schedule_id,
-            'payroll_status':'history'
+            'payroll_status':payrollstatus
           }
         try {
         let response=await this.$axios.post(apiUrl,data);
